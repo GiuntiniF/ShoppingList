@@ -16,3 +16,23 @@ void Item::setName(const std::string &name) {
     Item::name = name;
 }
 
+float Item::getBasePrice() const {
+    return basePrice;
+}
+
+void Item::setBasePrice(float basePrice) {
+    Item::basePrice = basePrice;
+}
+
+float Item::getQuantity() const {
+    return quantity;
+}
+
+void Item::setQuantity(float quantity) {
+    Item::quantity = quantity;
+}
+
+float Item::calculatePrice() {
+    return basePrice * quantity;
+}
+
