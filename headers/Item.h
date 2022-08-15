@@ -10,24 +10,27 @@
 #include <list>
 
 class Item {
-protected:
-    Item(std::string name, float basePrice, float quantity);
-
+public:
     const std::string &getName() const;
     void setName(const std::string &name);
     float getBasePrice() const;
     void setBasePrice(float basePrice);
     float getQuantity() const;
     void setQuantity(float quantity);
+protected:
+    Item(const std::string& name, float pricePerUnit, float quantity);
 
-    virtual float calculatePrice();
+
+    void isItemInList();
+
+    float calculatePrice();
 
     virtual void getItemInfo() = 0;
 
     virtual ~Item() = default;
 
-    std::string name;
-    float basePrice;
+    std::string name, categoryName;
+    float pricePerUnit;
     float quantity;
     std::list<std::string> itemList;
 };
