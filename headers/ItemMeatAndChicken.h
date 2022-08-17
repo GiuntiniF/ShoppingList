@@ -12,11 +12,10 @@
 class ItemMeatAndChicken : public Item {
 public:
 
-    ItemMeatAndChicken(const std::string& name, float basePrice, float quantity);
-
-    void getItemInfo() override;
+    explicit ItemMeatAndChicken(std::string name = "Chicken", float basePrice = 5, float quantity = 1);
 
     ~ItemMeatAndChicken() override = default;
+
 };
 
 

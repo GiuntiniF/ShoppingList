@@ -7,8 +7,10 @@
 #include <utility>
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
-Item::Item(const std::string& name, float pricePerUnit, float quantity) : name(name), pricePerUnit(pricePerUnit), quantity(quantity) {}
+Item::Item(std::string name, float pricePerUnit, float quantity, const std::string &categoryName)
+        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity) {}
 
 const std::string &Item::getName() const {
     return name;
@@ -34,18 +36,24 @@ void Item::setQuantity(float quantity) {
     Item::quantity = quantity;
 }
 
-float Item::calculatePrice() {
+float Item::calculatePrice() const {
     return pricePerUnit * quantity;
+}
+
+std::string Item::getItemInfo() const {
+    return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice());
 }
 
 void Item::isItemInList() {
     auto start = itemList.begin();
     auto end = itemList.end();
     bool itemPresent =  std::any_of(start, end, [pattern = getName()](const std::string& itemType) {
-        return itemType.size() > 0 && itemType == pattern;
+        return !itemType.empty() && itemType == pattern;
     });
     if(!itemPresent) {
-        throw std::invalid_argument(name+ "is no present in " + categoryName);
+        throw std::invalid_argument(name+ " is no present in " + categoryName);
     }
 }
+
+
 
