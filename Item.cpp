@@ -9,8 +9,8 @@
 #include <stdexcept>
 #include <iostream>
 
-Item::Item(std::string name, float pricePerUnit, float quantity, const std::string &categoryName)
-        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity) {}
+Item::Item(std::string name, float pricePerUnit, float quantity, std::string categoryName)
+        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)) {}
 
 const std::string &Item::getName() const {
     return name;

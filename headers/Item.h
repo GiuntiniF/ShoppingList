@@ -25,11 +25,9 @@ public:
     virtual ~Item() = default;
 
 protected:
-    Item(std::string name, float pricePerUnit, float quantity, const std::string& categoryName);
+    Item(std::string name, float pricePerUnit, float quantity, std::string  categoryName);
 
     void isItemInList();
-
-
 
     std::string name;
     const std::string categoryName;
