@@ -13,3 +13,10 @@ ASSERT_EQ(5, c.getBasePrice());
 ASSERT_EQ(1, c.getQuantity());
 ASSERT_EQ("Meat and Chicken", c.getCategoryName());
 }
+
+TEST(ItemMeatAndChicken, QuantityDiscount) {
+    ItemMeatAndChicken c;
+    c.setQuantity(6);
+    ASSERT_EQ(6, c.getQuantity());
+    ASSERT_EQ(24, c.calculatePrice());
+}
