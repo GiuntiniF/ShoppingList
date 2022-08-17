@@ -36,6 +36,10 @@ void Item::setQuantity(float quantity) {
     Item::quantity = quantity;
 }
 
+const std::string &Item::getCategoryName() const {
+    return categoryName;
+}
+
 float Item::calculatePrice() const {
     return pricePerUnit * quantity;
 }
@@ -54,6 +58,7 @@ void Item::isItemInList() {
         throw std::invalid_argument(name+ " is no present in " + categoryName);
     }
 }
+
 
 
 

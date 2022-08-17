@@ -17,6 +17,7 @@ public:
     void setBasePrice(float basePrice);
     float getQuantity() const;
     void setQuantity(float quantity);
+    const std::string &getCategoryName() const;
 
     float calculatePrice() const;
 
