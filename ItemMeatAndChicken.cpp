@@ -14,3 +14,8 @@ ItemMeatAndChicken::ItemMeatAndChicken(std::string name, float pricePerUnit, flo
     itemList = {"Chicken", "Ham", "Sausage", "Turkey"};
     isItemInList();
 }
+
+double ItemMeatAndChicken::calculatePrice() const {
+    double normalPrice = Item::calculatePrice();
+    return quantity >= 5 ? (normalPrice * 0.8) : normalPrice;
+}

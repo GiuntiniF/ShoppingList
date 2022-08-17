@@ -40,7 +40,7 @@ const std::string &Item::getCategoryName() const {
     return categoryName;
 }
 
-float Item::calculatePrice() const {
+double Item::calculatePrice() const {
     return pricePerUnit * quantity;
 }
 

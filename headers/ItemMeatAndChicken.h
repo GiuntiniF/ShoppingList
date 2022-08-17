@@ -14,6 +14,8 @@ public:
 
     explicit ItemMeatAndChicken(std::string name = "Chicken", float basePrice = 5, float quantity = 1);
 
+    double calculatePrice() const override;
+
     ~ItemMeatAndChicken() override = default;
 
 };
