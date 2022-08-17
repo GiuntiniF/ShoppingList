@@ -19,7 +19,7 @@ public:
     void setQuantity(float quantity);
     const std::string &getCategoryName() const;
 
-    float calculatePrice() const;
+    virtual double calculatePrice() const;
 
     virtual std::string getItemInfo() const;
 
