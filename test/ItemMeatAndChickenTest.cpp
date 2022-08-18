@@ -12,6 +12,7 @@ ASSERT_NE("chicken", c.getName());
 ASSERT_EQ(5, c.getBasePrice());
 ASSERT_EQ(1, c.getQuantity());
 ASSERT_EQ("Meat and Chicken", c.getCategoryName());
+ASSERT_NE("Snacks", c.getCategoryName());
 }
 
 TEST(ItemMeatAndChicken, QuantityDiscount) {
