@@ -3,10 +3,10 @@
 //
 #include "gtest/gtest.h"
 
-#include "../headers/ItemMeatAndChicken.h"
+#include "../headers/MeatAndChickenItem.h"
 
-TEST(ItemMeatAndChicken, DefaultConstructor) {
-ItemMeatAndChicken c;
+TEST(MeatAndChickenItem, DefaultConstructor) {
+MeatAndChickenItem c;
 ASSERT_EQ("Chicken", c.getName());
 ASSERT_NE("chicken", c.getName());
 ASSERT_EQ(5, c.getBasePrice());
@@ -15,8 +15,8 @@ ASSERT_EQ("Meat and Chicken", c.getCategoryName());
 ASSERT_NE("Snacks", c.getCategoryName());
 }
 
-TEST(ItemMeatAndChicken, QuantityDiscount) {
-    ItemMeatAndChicken c;
+TEST(MeatAndChickenItem, QuantityDiscount) {
+    MeatAndChickenItem c;
     c.setQuantity(5);
     c.setBasePrice(20);
     ASSERT_EQ(5, c.getQuantity());
