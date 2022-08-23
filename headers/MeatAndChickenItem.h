@@ -5,8 +5,6 @@
 #ifndef SHOPPINGLIST_MEATANDCHICKENITEM_H
 #define SHOPPINGLIST_MEATANDCHICKENITEM_H
 
-
-#include <vector>
 #include "Item.h"
 
 class MeatAndChickenItem : public Item {

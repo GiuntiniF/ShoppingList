@@ -2,7 +2,6 @@
 // Created by ubuntuwsl on 15/08/22.
 //
 
-#include <stdexcept>
 #include "headers/MeatAndChickenItem.h"
 
 MeatAndChickenItem::MeatAndChickenItem(std::string name, float pricePerUnit, float quantity) :
