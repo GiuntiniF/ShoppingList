@@ -52,10 +52,16 @@ std::string Item::getItemInfo() const {
 }
 
 void Item::isItemInList() {
+    std::string toUpperName = name;
+    std::cout << toUpperName << std::endl;
+    std::for_each(toUpperName.begin(), toUpperName.end(), [](char & c){
+        c = ::toupper(c);
+    });
+
     auto start = itemList.begin();
     auto end = itemList.end();
-    bool itemPresent =  std::any_of(start, end, [pattern = getName()](const std::string& itemType) {
-        return !itemType.empty() && itemType == pattern;
+    bool itemPresent =  std::any_of(start, end, [=](const std::string& itemType) {
+        return !itemType.empty() && itemType == toUpperName;
     });
     if(!itemPresent) {
         throw std::invalid_argument(name+ " is no present in " + categoryName);

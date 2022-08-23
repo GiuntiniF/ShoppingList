@@ -8,7 +8,6 @@
 TEST(MeatAndChickenItem, DefaultConstructor) {
 MeatAndChickenItem c;
 ASSERT_EQ("Chicken", c.getName());
-ASSERT_NE("chicken", c.getName());
 ASSERT_EQ(5, c.getBasePrice());
 ASSERT_EQ(1, c.getQuantity());
 ASSERT_EQ("Meat and Chicken", c.getCategoryName());
