@@ -10,7 +10,7 @@ VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUni
             pricePerUnit,
             quantity,
             "Vegetable and Fruit",
-            {"Lettuce", "Cabbage", "Potato", "Onion", "Apple", "Banana", "Blueberry"}), hasDiscount(hasDiscount) {
+            {"LETTUCE", "CABBAGE", "POTATO", "ONION", "APPLE", "BANANA", "BLUEBERRY"}), hasDiscount(hasDiscount) {
 
 }
 
