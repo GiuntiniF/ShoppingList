@@ -58,13 +58,11 @@ void Item::isItemInList() {
         c = ::toupper(c);
     });
 
-    auto start = itemList.begin();
-    auto end = itemList.end();
-    bool itemPresent =  std::any_of(start, end, [=](const std::string& itemType) {
+    bool itemPresent =  std::any_of(itemList.begin(), itemList.end(), [=](const std::string& itemType) {
         return !itemType.empty() && itemType == toUpperName;
     });
     if(!itemPresent) {
-        throw std::invalid_argument(name+ " is no present in " + categoryName);
+        throw std::invalid_argument(name+ " is not present in " + categoryName);
     }
 }
 

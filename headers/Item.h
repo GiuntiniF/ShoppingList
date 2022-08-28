@@ -12,11 +12,11 @@
 class Item {
 public:
     const std::string& getName() const;
-    void setName(const std::string &name);
+    virtual void setName(const std::string &name);
     float getBasePrice() const;
-    void setBasePrice(float basePrice);
+    virtual void setBasePrice(float basePrice);
     float getQuantity() const;
-    void setQuantity(float quantity);
+    virtual void setQuantity(float quantity);
     const std::string &getCategoryName() const;
 
     virtual double calculatePrice() const;
