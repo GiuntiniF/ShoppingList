@@ -10,7 +10,7 @@
 #include <iostream>
 
 Item::Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
-           std::list<std::string>  itemList)
+           std::list<std::string> itemList, bool discounted)
         : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)), itemList(std::move(itemList)) {
     isItemInList();
 }
@@ -48,12 +48,11 @@ double Item::calculatePrice() const {
 }
 
 std::string Item::getItemInfo() const {
-    return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice());
+    return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
 }
 
 void Item::isItemInList() {
     std::string toUpperName = name;
-    std::cout << toUpperName << std::endl;
     std::for_each(toUpperName.begin(), toUpperName.end(), [](char & c){
         c = ::toupper(c);
     });

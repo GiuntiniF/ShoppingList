@@ -4,24 +4,24 @@
 
 #include "headers/VegetableAndFruitItem.h"
 
-VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUnit, float quantity, bool hasDiscount) :
+VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUnit, float quantity, bool discounted) :
         Item(
-            std::move(name),
-            pricePerUnit,
-            quantity,
-            "Vegetable and Fruit",
-            {"LETTUCE", "CABBAGE", "POTATO", "ONION", "APPLE", "BANANA", "BLUEBERRY"}), hasDiscount(hasDiscount) {
+                std::move(name),
+                pricePerUnit,
+                quantity,
+                "Vegetable and Fruit",
+                {"LETTUCE", "CABBAGE", "POTATO", "ONION", "APPLE", "BANANA", "BLUEBERRY"}, discounted) {
 
 }
 
 double VegetableAndFruitItem::calculatePrice() const {
-    return hasDiscount ? (Item::calculatePrice() * 0.6) : Item::calculatePrice();
+    return discounted ? (Item::calculatePrice() * 0.6) : Item::calculatePrice();
 }
 
 bool VegetableAndFruitItem::isDiscounted() const {
-    return hasDiscount;
+    return discounted;
 }
 
-void VegetableAndFruitItem::setIsDiscounted(bool isDiscounted) {
-    VegetableAndFruitItem::hasDiscount = isDiscounted;
+void VegetableAndFruitItem::setDiscounted(bool discounted) {
+    VegetableAndFruitItem::discounted = discounted;
 }

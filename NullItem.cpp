@@ -5,13 +5,13 @@
 #include <iostream>
 #include "headers/NullItem.h"
 
-NullItem::NullItem() : Item("NULL", 0, 0, "", {"NULL"}) {}
+NullItem::NullItem() : Item("NULL", 0, 0, "", {"NULL"}, false) {}
 
 double NullItem::calculatePrice() const {
     return 0;
 }
 
-std::string NullItem::getItemInfo() const {std::cout << "Null Item" << std::endl;}
+std::string NullItem::getItemInfo() const {}
 
 void NullItem::setName(const std::string &name) {}
 

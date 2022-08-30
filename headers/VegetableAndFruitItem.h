@@ -14,15 +14,11 @@ public:
 
     bool isDiscounted() const;
 
-    void setIsDiscounted(bool isDiscounted);
+    void setDiscounted(bool isDiscounted);
 
     double calculatePrice() const override;
 
     ~VegetableAndFruitItem() override = default;
-
-private:
-    bool hasDiscount;
-
 };
 
 

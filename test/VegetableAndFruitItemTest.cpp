@@ -20,7 +20,7 @@ TEST(VegetableAndFruitItem, DiscountedPrice) {
     c.setBasePrice(6.5);
     ASSERT_EQ(6.5, c.getBasePrice());
     ASSERT_EQ(15.6, c.calculatePrice());
-    c.setIsDiscounted(false);
+    c.setDiscounted(false);
     ASSERT_EQ(false, c.isDiscounted());
     ASSERT_EQ(26, c.calculatePrice());
 }
