@@ -18,6 +18,8 @@ public:
     float getQuantity() const;
     virtual void setQuantity(float quantity);
     const std::string &getCategoryName() const;
+    bool isItemInList() const;
+    void setItemInList(bool isItemInList);
 
     virtual double calculatePrice() const;
 
@@ -29,14 +31,15 @@ protected:
     Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
          std::list<std::string> itemList, bool discounted);
 
-    void isItemInList();
+    void isItemInCategoryList();
 
     std::string name;
     const std::string categoryName;
     float pricePerUnit;
     float quantity;
-    std::list<std::string> itemList;
+    std::list<std::string> itemCategories;
     bool discounted;
+    bool itemInList;
 };
 
 

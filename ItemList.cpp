@@ -30,6 +30,7 @@ void ItemList::setListName(const std::string &listName) {
 
 void ItemList::addItem(std::shared_ptr<Item> item) {
     items.push_back(std::move(item));
+    items.back()->setItemInList(true);
 }
 
 void ItemList::printList() const {

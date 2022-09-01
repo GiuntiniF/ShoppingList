@@ -11,8 +11,8 @@
 
 Item::Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
            std::list<std::string> itemList, bool discounted)
-        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)), itemList(std::move(itemList)) {
-    isItemInList();
+        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)), itemCategories(std::move(itemList)) {
+    isItemInCategoryList();
 }
 
 const std::string &Item::getName() const {
@@ -51,18 +51,26 @@ std::string Item::getItemInfo() const {
     return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
 }
 
-void Item::isItemInList() {
+void Item::isItemInCategoryList() {
     std::string toUpperName = name;
     std::for_each(toUpperName.begin(), toUpperName.end(), [](char & c){
         c = ::toupper(c);
     });
 
-    bool itemPresent =  std::any_of(itemList.begin(), itemList.end(), [=](const std::string& itemType) {
+    bool itemPresent =  std::any_of(itemCategories.begin(), itemCategories.end(), [=](const std::string& itemType) {
         return !itemType.empty() && itemType == toUpperName;
     });
     if(!itemPresent) {
         throw std::invalid_argument(name+ " is not present in " + categoryName);
     }
+}
+
+bool Item::isItemInList() const {
+    return itemInList;
+}
+
+void Item::setItemInList(bool isItemInList) {
+    Item::itemInList = isItemInList;
 }
 
 
