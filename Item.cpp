@@ -2,6 +2,8 @@
 // Created by ubuntuwsl on 14/08/22.
 //
 
+#include "Item.h"
+#include "headers/VegetableAndFruitItem.h"
 #include "headers/Item.h"
 
 #include <utility>
@@ -11,7 +13,7 @@
 
 Item::Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
            std::list<std::string> itemList, bool discounted)
-        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)), itemCategories(std::move(itemList)) {
+        : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), categoryName(std::move(categoryName)), itemCategories(std::move(itemList)), discounted(discounted) {
     isItemInCategoryList();
 }
 
@@ -74,5 +76,10 @@ void Item::setItemInList(bool isItemInList) {
 }
 
 
+bool Item::isDiscounted() const {
+    return discounted;
+}
 
-
+void Item::setDiscounted(bool discounted) {
+    discounted = discounted;
+}
