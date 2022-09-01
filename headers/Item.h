@@ -33,7 +33,7 @@ public:
 
 protected:
     Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
-         std::list<std::string> itemList, bool discounted);
+         std::list<std::string> itemList, bool discounted = false);
 
     void isItemInCategoryList();
 

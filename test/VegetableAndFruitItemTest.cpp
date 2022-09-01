@@ -12,7 +12,7 @@ TEST(VegetableAndFruitItem, DefaultConstructor) {
     ASSERT_NE("chicken", c.getName());
     ASSERT_EQ(2, c.getBasePrice());
     ASSERT_EQ(4, c.getQuantity());
-    ASSERT_EQ(true, c.isDiscounted());
+    ASSERT_TRUE(c.isDiscounted());
     ASSERT_EQ("Vegetable and Fruit", c.getCategoryName());
 }
 
@@ -22,6 +22,6 @@ TEST(VegetableAndFruitItem, DiscountedPrice) {
     ASSERT_EQ(6.5, c.getBasePrice());
     ASSERT_EQ(15.6, c.calculatePrice());
     c.setDiscounted(false);
-    ASSERT_EQ(false, c.isDiscounted());
+    ASSERT_FALSE(c.isDiscounted());
     ASSERT_EQ(26, c.calculatePrice());
 }

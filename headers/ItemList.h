@@ -12,7 +12,7 @@
 
 class ItemList {
 public:
-    explicit ItemList(std::string listName);
+    explicit ItemList(std::string listName = "List");
 
     int getListId() const;
 
@@ -22,12 +22,18 @@ public:
 
     void setListName(const std::string &listName);
 
+    int getListSize() const;
+
     void addItem(std::shared_ptr<Item> item);
 
     void printList() const;
     void removeItem();
     void removeItem(int index);
 
+    std::shared_ptr<Item> getItem(int index) const;
+
+
+    static int getListIdCounter();
 
 private:
     int listId;
