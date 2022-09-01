@@ -27,6 +27,15 @@ TEST_F(ItemListSuite, DefaultConstructor) {
 }
 TEST_F(ItemListSuite, RemoveLast) {
     ASSERT_EQ(3, c.getListSize());
+    ASSERT_EQ(item3, c.getItem(c.getListSize()));
     c.removeItem();
-    std::cout << item3->getItemInfo() << std::endl;
+    ASSERT_EQ(2, c.getListSize());
+    ASSERT_EQ(item2, c.getItem(c.getListSize()));
+}
+TEST_F(ItemListSuite, RemoveFirst) {
+    ASSERT_EQ(3, c.getListSize());
+    ASSERT_EQ(item1, c.getItem(1));
+    c.removeItem(1);
+    ASSERT_EQ(2, c.getListSize());
+    ASSERT_EQ(item2, c.getItem(1));
 }

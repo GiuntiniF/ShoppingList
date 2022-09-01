@@ -58,6 +58,11 @@ void ItemList::removeItem(int index) {
     items.erase(itr);
 }
 
+std::shared_ptr<Item> ItemList::getItem(int index) const {
+    auto itr = items.begin();
+    advance(itr, index - 1);
+    return *itr;
+}
 int ItemList::getListIdCounter() {
     return listIdCounter;
 }
@@ -65,3 +70,4 @@ int ItemList::getListIdCounter() {
 int ItemList::getListSize() const {
     return (int)items.size();
 }
+
