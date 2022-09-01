@@ -30,6 +30,8 @@ public:
     void removeItem();
     void removeItem(int index);
 
+    std::shared_ptr<Item> getItem(int index) const;
+
 
     static int getListIdCounter();
 
