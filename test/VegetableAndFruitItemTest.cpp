@@ -4,7 +4,6 @@
 #include "gtest/gtest.h"
 
 #include "../headers/VegetableAndFruitItem.h"
-#include "Item.h"
 
 TEST(VegetableAndFruitItem, DefaultConstructor) {
     VegetableAndFruitItem c;

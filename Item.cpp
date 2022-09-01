@@ -2,8 +2,6 @@
 // Created by ubuntuwsl on 14/08/22.
 //
 
-#include "Item.h"
-#include "headers/VegetableAndFruitItem.h"
 #include "headers/Item.h"
 
 #include <utility>
@@ -81,5 +79,5 @@ bool Item::isDiscounted() const {
 }
 
 void Item::setDiscounted(bool discounted) {
-    discounted = discounted;
+    this->discounted = discounted;
 }

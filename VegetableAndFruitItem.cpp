@@ -3,7 +3,6 @@
 //
 
 #include "headers/VegetableAndFruitItem.h"
-#include "Item.h"
 
 VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUnit, float quantity, bool discounted) :
         Item(
