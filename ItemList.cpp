@@ -39,7 +39,7 @@ void ItemList::printList() const {
     {
         int index = 1;
         for(const auto& item : items) {
-            listOutput += std::to_string(index) + ") " + item->getItemInfo();
+            listOutput += item->getItemInfo();
             index++;
         }
     } else
@@ -50,13 +50,21 @@ void ItemList::printList() const {
 }
 
 void ItemList::removeItem() {
-    items.pop_back();
+    if(!items.empty()) {
+        items.pop_back();
+    } else {
+        std::cout << listName << " is already empty" << std::endl;
+    }
 }
 
 void ItemList::removeItem(int index) {
-    auto itr = items.begin();
-    advance(itr, index - 1);
-    items.erase(itr);
+    if(!items.empty()) {
+        auto itr = items.begin();
+        advance(itr, index - 1);
+        items.erase(itr);
+    } else {
+        std::cout << listName << " is already empty" << std::endl;
+    }
 }
 
 std::shared_ptr<Item> ItemList::getItem(int index) const {

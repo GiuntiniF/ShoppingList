@@ -9,10 +9,7 @@ VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUni
                 std::move(name),
                 pricePerUnit,
                 quantity,
-                "Vegetable and Fruit",
-                {"LETTUCE", "CABBAGE", "POTATO", "ONION", "APPLE", "BANANA", "BLUEBERRY"}, discounted) {
-
-}
+                discounted) {}
 
 double VegetableAndFruitItem::calculatePrice() const {
     return discounted ? (Item::calculatePrice() * 0.6) : Item::calculatePrice();

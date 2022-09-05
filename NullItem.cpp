@@ -11,7 +11,7 @@ double NullItem::calculatePrice() const {
     return 0;
 }
 
-std::string NullItem::getItemInfo() const {return "";}
+std::string NullItem::getItemInfo() const {return "null";}
 
 void NullItem::setName(const std::string &name) {}
 

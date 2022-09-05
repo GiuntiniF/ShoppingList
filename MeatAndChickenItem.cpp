@@ -9,8 +9,7 @@ MeatAndChickenItem::MeatAndChickenItem(std::string name, float pricePerUnit, flo
                 std::move(name),
                 pricePerUnit,
                 quantity,
-                "Meat and Chicken",
-                {"CHICKEN", "HAM", "SAUSAGE", "TURKEY"}, false) {}
+                discounted) {}
 
 double MeatAndChickenItem::calculatePrice() const {
     return (quantity >= 5 && discounted) ? (Item::calculatePrice() * 0.8) : Item::calculatePrice();

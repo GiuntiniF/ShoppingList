@@ -32,16 +32,15 @@ public:
     void setDiscounted(bool isDiscounted);
 
 protected:
-    Item(std::string name, float pricePerUnit, float quantity, std::string categoryName,
-         std::list<std::string> itemList, bool discounted = false);
+    Item(std::string name, float pricePerUnit, float quantity, bool discounted = false);
 
-    void isItemInCategoryList();
+    //void isItemInCategoryList(std::string &name, const std::list<std::string> &itemCategories);
 
     std::string name;
-    const std::string categoryName;
+    //std::string categoryName;
     float pricePerUnit;
     float quantity;
-    std::list<std::string> itemCategories;
+    //std::list<std::string> itemCategories;
     bool discounted;
     bool itemInList;
 };
