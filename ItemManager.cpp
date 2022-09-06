@@ -10,10 +10,12 @@
 
 std::unique_ptr<Item> ItemManager::createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted) {
     switch(category) {
-        case MEATANDCHICKEN :
-            return std::unique_ptr<Item>(new MeatAndChickenItem(name, pricePerUnit, quantity, discounted));
+        case MEATANDCHICKEN:
+            if(!name.empty() && pricePerUnit > 0 && quantity > 0)
+                return std::unique_ptr<Item>(new MeatAndChickenItem(name, pricePerUnit, quantity, discounted));
         case VEGETABLEANDFRUITS:
-            return std::unique_ptr<Item>(new VegetableAndFruitItem(name, pricePerUnit, quantity, discounted));
+            if(!name.empty() && pricePerUnit > 0 && quantity > 0)
+                return std::unique_ptr<Item>(new VegetableAndFruitItem(name, pricePerUnit, quantity, discounted));
         default:
             return std::unique_ptr<Item>(new NullItem());
     }

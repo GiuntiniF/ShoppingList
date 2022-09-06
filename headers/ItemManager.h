@@ -15,7 +15,7 @@ public:
         MEATANDCHICKEN = 0,
         VEGETABLEANDFRUITS = 1,
     };
-    std::unique_ptr<Item> createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted);
+    static std::unique_ptr<Item> createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted = false);
 };
 
 
