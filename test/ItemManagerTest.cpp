@@ -5,12 +5,7 @@
 
 #include "../headers/ItemManager.h"
 
-class ItemManagerSuite : public ::testing::Test {
-protected:
-    ItemManager c;
-};
-
-TEST_F(ItemManagerSuite, InitItem) {
+TEST(ItemManager, InitItem) {
     auto meat = ItemManager::createItem(0, "Turket", 3, 4, false);
     ASSERT_EQ(meat->calculatePrice(), 12);
     meat->setDiscounted(true);
@@ -21,7 +16,7 @@ TEST_F(ItemManagerSuite, InitItem) {
     ASSERT_EQ(apple->calculatePrice(), 6*0.6);
 }
 
-TEST_F(ItemManagerSuite, InitInvalid) {
+TEST(ItemManager, InitInvalid) {
     auto invalid1 = ItemManager::createItem(12, "Turket", 3, 4, false);
     ASSERT_EQ(invalid1->calculatePrice(), 0);
     auto invalid2 = ItemManager::createItem(1, "applefake", 0, 2, true);
