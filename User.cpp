@@ -5,6 +5,14 @@
 #include "headers/User.h"
 
 #include <memory>
+#include <utility>
+
+int User::usersCount = 0;
+
+User::User(std::string name): name(std::move(name)) {
+    User::usersCount++;
+    uid = User::usersCount;
+}
 
 const std::string &User::getName() const {
     return name;
