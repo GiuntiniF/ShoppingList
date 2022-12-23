@@ -8,9 +8,12 @@
 #include <algorithm>
 #include <iostream>
 
-int ItemList::listIdCounter = 1;
+int ItemList::listIdCounter = 0;
 
-ItemList::ItemList(std::string listName) : listId(listIdCounter++), listName(std::move(listName)) {}
+ItemList::ItemList(std::string listName) : listName(std::move(listName)) {
+    ItemList::listIdCounter++;
+    listId = ItemList::listIdCounter;
+}
 
 int ItemList::getListId() const {
     return listId;
