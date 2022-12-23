@@ -11,7 +11,7 @@ int User::usersCount = 0;
 
 User::User(std::string name): name(std::move(name)) {
     User::usersCount++;
-    uid = User::usersCount;
+    userId = User::usersCount;
 }
 
 const std::string &User::getName() const {

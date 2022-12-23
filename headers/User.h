@@ -19,7 +19,7 @@ public:
     bool addList(std::shared_ptr<ItemList> list);
 
 private:
-    int uid;
+    int userId;
     static int usersCount;
     std::string name;
     std::list<std::shared_ptr<ItemList>> lists;
