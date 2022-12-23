@@ -17,7 +17,8 @@ public:
     void setName(const std::string &name);
     bool addList(std::string &name);
     bool addList(std::shared_ptr<ItemList> list);
-
+    void printAllLists() const;
+    void getListInfo(int listId) const;
 private:
     int userId;
     static int usersCount;

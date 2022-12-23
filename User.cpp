@@ -6,6 +6,8 @@
 
 #include <memory>
 #include <utility>
+#include <iostream>
+#include <algorithm>
 
 int User::usersCount = 0;
 
@@ -31,4 +33,36 @@ bool User::addList(std::shared_ptr<ItemList> list) {
     if(list == nullptr) return false;
     lists.push_back(list);
     return true;
+}
+
+void User::printAllLists() const {
+    std::string r;
+    if(!lists.empty())
+    {
+        for(const auto& list : lists) {
+            r += "name: " + list->getListName() + ", serial: " + std::to_string(list->getListId());
+        }
+    } else
+    {
+        r += getName() + " has no lists";
+    }
+    std::cout << r << std::endl;
+}
+
+void User::getListInfo(int listId) const {
+    if(listId >= 0)
+    {
+        std::cout << "Invalid List Id" << std::endl;
+    }
+    else {
+        auto myList = std::find_if(lists.begin(), lists.end(), [listId](const std::shared_ptr<ItemList> list){
+            return list->getListId() == listId;
+        });
+
+        if(myList == lists.end()) {
+            std::cout << "No item with given listId" << std::endl;
+        } else {
+            myList->get()->printList();
+        }
+    }
 }
