@@ -10,9 +10,17 @@
 #include <stdexcept>
 #include <iostream>
 
-Item::Item(std::string name, float pricePerUnit, float quantity, bool discounted)
-    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted), itemInList(false) {}
+int Item::itemCount = 0;
 
+Item::Item(std::string name, float pricePerUnit, float quantity, bool discounted)
+    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted), itemInList(false) {
+    Item::itemCount++;
+    itemId = Item::itemCount;
+}
+
+int Item::getItemId() const {
+    return itemId;
+}
 const std::string &Item::getName() const {
     return name;
 }

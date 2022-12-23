@@ -11,6 +11,7 @@
 
 class Item {
 public:
+    int getItemId() const;
     const std::string& getName() const;
     virtual void setName(const std::string &name);
     float getBasePrice() const;
@@ -35,7 +36,7 @@ protected:
     Item(std::string name, float pricePerUnit, float quantity, bool discounted = false);
 
     //void isItemInCategoryList(std::string &name, const std::list<std::string> &itemCategories);
-
+    int itemId;
     std::string name;
     //std::string categoryName;
     float pricePerUnit;
@@ -43,6 +44,7 @@ protected:
     //std::list<std::string> itemCategories;
     bool discounted;
     bool itemInList;
+    static int itemCount;
 };
 
 
