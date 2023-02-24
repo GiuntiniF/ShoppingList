@@ -1,7 +1,7 @@
 //
 // Created by francesco on 12/23/22.
 //
-
+//TODO implementare pattern Observer per tener traccia del numero totale di oggetti da acquistare (complessivo, non per singola lista)
 #include "headers/User.h"
 
 #include <memory>
@@ -49,10 +49,10 @@ void User::printAllLists() const {
     std::cout << r << std::endl;
 }
 
-void User::getListInfo(int listId) const {
+bool User::getListInfo(int listId) const {
     if(listId < 0)
     {
-        std::cout << "Invalid List Id" << std::endl;
+        return false;
     }
     else {
         auto myList = std::find_if(lists.begin(), lists.end(), [listId](const std::shared_ptr<ItemList> list){
@@ -61,10 +61,12 @@ void User::getListInfo(int listId) const {
 
         if(myList == lists.end()) {
             std::cout << "No item with given listId" << std::endl;
+            return false;
         } else {
             myList->get()->printList();
         }
     }
+    return true;
 }
 
 int User::getUserId() const {

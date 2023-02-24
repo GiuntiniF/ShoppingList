@@ -2,13 +2,12 @@
 // Created by francesco on 12/26/22.
 //
 #include "gtest/gtest.h"
-
 #include "../headers/MeatAndChickenItem.h"
 #include "../headers/VegetableAndFruitItem.h"
 #include "../headers/ItemList.h"
 #include "../headers/User.h"
 
-
+//TODO aggiungi test per pattern Observer
 class UserSuite : public ::testing::Test {
 protected:
     void SetUp() override {
@@ -45,4 +44,14 @@ TEST_F(UserSuite, AddListToUser) {
     ASSERT_EQ(1, myuser.getListCount());
     myuser.addList("Nuova Lista");
     ASSERT_EQ(2, myuser.getListCount());
+}
+
+TEST_F(UserSuite, getListInfo) {
+    User myuser = User("Test");
+    ASSERT_FALSE(myuser.getListInfo(-1));
+    int my_id = list1->getListId();
+    int my_id2 = list2->getListId();
+    myuser.addList(list1);
+    ASSERT_FALSE(myuser.getListInfo(my_id2));
+    ASSERT_TRUE(myuser.getListInfo(my_id));
 }

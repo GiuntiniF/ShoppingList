@@ -20,7 +20,7 @@ public:
     bool addList(std::shared_ptr<ItemList> list);
     int getListCount() const;
     void printAllLists() const;
-    void getListInfo(int listId) const;
+    bool getListInfo(int listId) const;
     static int getUsersCount();
 private:
     int userId;
