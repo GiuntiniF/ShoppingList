@@ -13,12 +13,15 @@ class User {
 public:
     explicit User(std::string name);
 
+    int getUserId() const;
     const std::string &getName() const;
     void setName(const std::string &name);
-    bool addList(std::string &name);
+    bool addList(std::string name);
     bool addList(std::shared_ptr<ItemList> list);
+    int getListCount() const;
     void printAllLists() const;
     void getListInfo(int listId) const;
+    static int getUsersCount();
 private:
     int userId;
     static int usersCount;

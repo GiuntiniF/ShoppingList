@@ -24,8 +24,8 @@ void User::setName(const std::string &name) {
     User::name = name;
 }
 
-bool User::addList(std::string &name) {
-    lists.push_back(std::make_shared<ItemList>(name));
+bool User::addList(std::string listName) {
+    lists.push_back(std::make_shared<ItemList>(listName));
     return true;
 }
 
@@ -40,7 +40,7 @@ void User::printAllLists() const {
     if(!lists.empty())
     {
         for(const auto& list : lists) {
-            r += "name: " + list->getListName() + ", serial: " + std::to_string(list->getListId());
+            r += "name: " + list->getListName() + ", serial: " + std::to_string(list->getListId()) + "\n";
         }
     } else
     {
@@ -50,7 +50,7 @@ void User::printAllLists() const {
 }
 
 void User::getListInfo(int listId) const {
-    if(listId >= 0)
+    if(listId < 0)
     {
         std::cout << "Invalid List Id" << std::endl;
     }
@@ -65,4 +65,16 @@ void User::getListInfo(int listId) const {
             myList->get()->printList();
         }
     }
+}
+
+int User::getUserId() const {
+    return userId;
+}
+
+int User::getListCount() const {
+    return static_cast<int>(lists.size());
+}
+
+int User::getUsersCount() {
+    return User::usersCount;
 }
