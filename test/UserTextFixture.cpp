@@ -14,7 +14,6 @@ protected:
         list1->addItem(std::move(item1));
         list1->addItem(std::move(item2));
         list1->addItem(std::move(item3));
-        list2->addItem(std::move(item4));
         list2->addItem(std::move(item5));
         list2->addItem(std::move(item6));
     }
@@ -24,7 +23,6 @@ protected:
     std::unique_ptr<Item> item3 = std::make_unique<VegetableAndFruitItem>("Salad", 3, 3);
 
     std::shared_ptr<ItemList> list2 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item4 = std::make_unique<MeatAndChickenItem>();
     std::unique_ptr<Item> item5 = std::make_unique<MeatAndChickenItem>("Chicken", 5, 10);
     std::unique_ptr<Item> item6 = std::make_unique<MeatAndChickenItem>("Meat", 1, 1);
 };
@@ -42,8 +40,6 @@ TEST_F(UserSuite, AddListToUser) {
     ASSERT_EQ(0, myuser.getListCount());
     myuser.addList(list1);
     ASSERT_EQ(1, myuser.getListCount());
-    myuser.addList("Nuova Lista");
-    ASSERT_EQ(2, myuser.getListCount());
 }
 
 TEST_F(UserSuite, getListInfo) {
@@ -54,4 +50,21 @@ TEST_F(UserSuite, getListInfo) {
     myuser.addList(list1);
     ASSERT_FALSE(myuser.getListInfo(my_id2));
     ASSERT_TRUE(myuser.getListInfo(my_id));
+}
+
+TEST_F(UserSuite, testObserverPattern) {
+    User myuser = User("Test");
+    ASSERT_FALSE(myuser.getListInfo(-1));
+    ASSERT_EQ(0, myuser.getNumberOfItemsToBuy());
+    ASSERT_EQ(0, myuser.getNumberOfLists());
+    int mylistid = list1->getListId();
+    myuser.addList(list1);
+    ASSERT_EQ(3, myuser.getNumberOfItemsToBuy());
+    ASSERT_EQ(1, myuser.getNumberOfLists());
+    myuser.addList(list2);
+    ASSERT_EQ(5, myuser.getNumberOfItemsToBuy());
+    ASSERT_EQ(2, myuser.getNumberOfLists());
+    myuser.removeList(mylistid);
+    ASSERT_EQ(2, myuser.getNumberOfItemsToBuy());
+    ASSERT_EQ(1, myuser.getNumberOfLists());
 }
