@@ -3,6 +3,7 @@
 //
 
 #include <memory>
+#include <iostream>
 #include "headers/ItemManager.h"
 #include "headers/MeatAndChickenItem.h"
 #include "headers/VegetableAndFruitItem.h"
@@ -20,3 +21,10 @@ std::unique_ptr<Item> ItemManager::createItem(int category, const std::string& n
             return std::unique_ptr<Item>(new NullItem());
     }
 }
+
+void ItemManager::printCategories() {
+    std::cout << "0 - Meat and Chicken" << std::endl;
+    std::cout << "1 - Vegetable and Fruits" << std::endl;
+
+}
+

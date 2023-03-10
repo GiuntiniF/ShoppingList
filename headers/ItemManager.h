@@ -11,11 +11,13 @@
 
 class ItemManager {
 public:
+    static std::unique_ptr<Item> createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted = false);
+    static void printCategories();
+private:
     enum categories {
         MEATANDCHICKEN = 0,
         VEGETABLEANDFRUITS = 1,
     };
-    static std::unique_ptr<Item> createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted = false);
 };
 
 
