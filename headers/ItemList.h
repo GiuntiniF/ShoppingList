@@ -26,6 +26,7 @@ public:
     void removeItem();
     void removeItem(int index);
     std::shared_ptr<Item> getItem(int index) const;
+    const std::list<std::shared_ptr<Item>> &getItems() const;
 
     static int getListIdCounter();
 

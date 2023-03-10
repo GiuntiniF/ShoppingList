@@ -114,3 +114,7 @@ void ItemList::notify() {
         user.lock()->update();
     }
 }
+
+const std::list<std::shared_ptr<Item>> &ItemList::getItems() const {
+    return items;
+}
