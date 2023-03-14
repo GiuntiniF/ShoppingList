@@ -37,17 +37,13 @@ void Item::setBasePrice(float basePrice) {
     Item::pricePerUnit = basePrice;
 }
 
-float Item::getQuantity() const {
+int Item::getQuantity() const {
     return quantity;
 }
 
-void Item::setQuantity(float quantity) {
+void Item::setQuantity(int quantity) {
     Item::quantity = quantity;
 }
-/*
-const std::string &Item::getCategoryName() const {
-    return categoryName;
-}*/
 
 double Item::calculatePrice() const {
     return pricePerUnit * quantity;
@@ -56,20 +52,6 @@ double Item::calculatePrice() const {
 std::string Item::getItemInfo() const {
     return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
 }
-
-//DEPRECATO
-/*void Item::isItemInCategoryList(std::string &name, const std::list<std::string> &itemCategories) {
-    std::for_each(name.begin(), name.end(), [](char & c){
-        c = ::toupper(c);
-    });
-
-    bool itemPresent =  std::any_of(itemCategories.begin(), itemCategories.end(), [=](const std::string& itemType) {
-        return !itemType.empty() && itemType == name;
-    });
-    if(!itemPresent) {
-        throw std::invalid_argument(name+ " is not present in " + categoryName);
-    }
-}*/
 
 bool Item::isItemInList() const {
     return itemInList;
