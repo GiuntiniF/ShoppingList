@@ -2,28 +2,35 @@
 #include <iostream>
 #include "headers/Item.h"
 #include "headers/ItemList.h"
+#include "headers/ItemManager.h"
 #include "headers/User.h"
 
 typedef std::map<int, std::shared_ptr<User>> UserList;
 typedef std::map<int, std::weak_ptr<ItemList>> ShoppingLists;
 
-//TODO addExistingList messaggio inserimento list id e se list id non presente in liste esistenti dare errore
 //TODO stampare seriale e messaggio quando si aggiunge un user con successo
 //TODO aggiungere funzione removeList per rimuovere una lista da uno user e cancellarla con la funzione clearListMap(key) usando overload per esaminare solo quella lista invecew di tutta la mappa se era l'ultimo user a possedere quella lista
 
+//TODO finire funzioni per modificare item in lista
+//TODO rimuovere parti inutilizzate
 void help() {
     std::cout << "---USER RELATED COMMANDS---" << std::endl;
     std::cout << "addUser: create a new User by adding the Username" << std::endl;
     std::cout << "printUsers: prints a list of all the users " << std::endl;
-    std::cout << "login: select the user you want to login with" << std::endl;
+    std::cout << "login: select the user you want to login with using the user Id" << std::endl;
     std::cout << "logout: logout from the logged user" << std::endl;
     std::cout << "deleteUser: delete a User from the application (must be logged as said user)" << std::endl;
     std::cout << "addNewList: create a new Shopping List and assign it to the current user (must be logged as said user)" << std::endl;
     std::cout << "addExistingList: add an existing Shopping List to this user using the Id of the list (must be logged as said user)" << std::endl;
     std::cout << "printAllLists: prints all the user's Shopping Lists and their contents (must be logged as said user)" << std::endl;
+    std::cout << "removeList: removes a list from the user using the Id of the list, deleting it if it isn't assigned to any user (must be logged as a user having said list)" << std::endl;
+    std::cout << "selectList: select a list to work on using the Id of the list (must be logged as a user having said list)" << std::endl;
     std::cout << std::endl;
     std::cout << "---LIST RELATED COMMANDS---" << std::endl;
     std::cout << "selectList: selects one of the users list to work with (must be logged as said user)" << std::endl;
+    std::cout << "addItem: adds a new item to the selected list (said list must be selected first using the selectList command)" << std::endl;
+    //std::cout << "selectItem: selects one of the items of the list to work with (said list must be selected first using the selectList command)" << std::endl;
+    //std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
     std::cout << std::endl;
     std::cout << "---GENERAL COMMANDS---" << std::endl;
     std::cout << "exit: close the application" << std::endl;
@@ -33,6 +40,10 @@ void notLoggedError() {
     std::cout << "You are not logged as an user" << std::endl;
 }
 
+void noListSelectedError() {
+    std::cout << "No List has been selected" << std::endl;
+}
+
 void clearListMap(ShoppingLists& listMap) {
     auto it = listMap.begin();
     while (it != listMap.end()) {
@@ -40,6 +51,15 @@ void clearListMap(ShoppingLists& listMap) {
             it = listMap.erase(it);
         } else {
             it++;
+        }
+    }
+}
+
+void clearListMap(ShoppingLists& listMap, int key) {
+    auto it = listMap.find(key);
+    if (it != listMap.end()) {
+        if (it->second.expired()) {
+            listMap.erase(it);
         }
     }
 }
@@ -117,15 +137,7 @@ bool deleteUser(UserList& userMap, ShoppingLists& listMap, std::weak_ptr<User>& 
             std::string userNameForMessage = currentUser.lock()->getName();
             userMap.erase(itr->first);
             currentUser.reset();
-            std::cout << "list map before clear" << std::endl;
-            for(auto const& list : listMap) {
-                std::cout << "Serial: " << list.second.lock()->getListId() << " use count:"<<  list.second.use_count() << std::endl;
-            }
             clearListMap(listMap);
-            std::cout << "list map after clear" << std::endl;
-            for(auto const& list : listMap) {
-                std::cout << "Serial: " << list.second.lock()->getListId() << " use count:"<<  list.second.use_count() << std::endl;
-            }
             return true;
         } else return false;
     } else return false;
@@ -147,6 +159,7 @@ bool addNewList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser) 
 }
 
 bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& currentUser) {
+    std::cout << "Insert the id of the list you want to add >>" << std::endl;
     int tmpListId;
     std::cin >> tmpListId;
     if(!tmpListId) {
@@ -161,13 +174,10 @@ bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& cu
     } else {
         auto itr = listMap.find(tmpListId);
         if(itr != listMap.end()) {
-            std::cout << itr->second.use_count() << std::endl;
             std::shared_ptr<ItemList> tmpList = itr->second.lock();
-            std::cout << tmpList.use_count() << std::endl;
             currentUser.lock()->addList(tmpList);
-            std::cout << itr->second.use_count() << std::endl;
         } else {
-            std::cout << "No list with the given serial was found!" << std::endl;
+            std::cout << "No list with the given id was found!" << std::endl;
         }
     }
     std::cin.clear();
@@ -183,6 +193,126 @@ bool printAllLists( const std::weak_ptr<User>& currentUser) {
     return true;
 }
 
+bool removeList(ShoppingLists& listMap, std::weak_ptr<User>& currentUser) {
+    if(currentUser.expired()) {
+        notLoggedError();
+        return false;
+    }
+    if(currentUser.lock()->getNumberOfLists() == 0) {
+        std::cout << "No list to delete" << std::endl;
+        return false;
+    }
+    std::cout << "Insert the serial of the list you want to delete >>" << std::endl;
+    int tmpListId;
+    std::cin >> tmpListId;
+    if(!tmpListId) {
+        std::cout << "Insert a valid list serial" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    } else
+    if(listMap.empty()) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return false;
+    } else {
+        if(currentUser.lock()->removeList(tmpListId)) {
+            auto itr = listMap.find(tmpListId);
+            clearListMap(listMap, tmpListId);
+        }
+    }
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    return true;
+}
+
+bool selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,std::weak_ptr<ItemList>& currentList) {
+    if(currentUser.expired()) {
+        notLoggedError();
+        return false;
+    }
+    if(currentUser.lock()->getNumberOfLists() == 0) {
+        std::cout << "No list to select" << std::endl;
+        return false;
+    }
+    std::cout << "Insert the serial of the list you want to select >>" << std::endl;
+    int tmpListId;
+    std::cin >> tmpListId;
+    if(!tmpListId) {
+        std::cout << "Insert a valid list serial" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+    } else
+    if(listMap.empty()) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        return false;
+    } else {
+        auto mylist = currentUser.lock()->getLists();
+        auto itr = mylist.find(tmpListId);
+        if(itr != mylist.end()) {
+            currentList = itr->second;
+        } else {
+            std::cout << currentUser.lock()->getName() <<" doesn't have any list with the given serial" << std::endl;
+            return false;
+        }
+    }
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    return true;
+}
+
+bool addItem(std::weak_ptr<ItemList>& currentList) {
+    if(currentList.expired()) {
+        noListSelectedError();
+        return false;
+    }
+    int itemCategory = 0;
+    std::string itemName, response;
+    float itemPricePerUnit = 0, itemQuantity = 0;
+    bool itemDiscounted = false;
+    std::cout << "Select one of the following Item Categories by inserting their Id" << std::endl;
+    ItemManager::printCategories();
+    std::cout << " >>"<< std::endl;
+    std::cin >> itemCategory;
+    if(!itemCategory) {
+        std::cout << "insert a valid item category" << std::endl;
+        return false;
+    }
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+    std::cout << "Insert the name of the item you want to add >>" << std::endl;
+    std::getline(std::cin, itemName);
+    if(itemName.empty()) {
+        std::cout << "insert a valid item name" << std::endl;
+        return false;
+    }
+    std::cin.clear();
+    std::cout << "Insert the price per unit of the item you want to add >>" << std::endl;
+    std::cin >> itemPricePerUnit;
+    if(itemPricePerUnit<=0) {
+        std::cout << "insert a valid price" << std::endl;
+        return false;
+    }
+    std::cout << "Insert how many of said items you want to add >>" << std::endl;
+    std::cin >> itemQuantity;
+    if(itemQuantity<=0) {
+        std::cout << "insert a valid number" << std::endl;
+        return false;
+    }
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+    std::cout << "Is the item  you want to add discounted? (y/n) >>" << std::endl;
+    std::getline(std::cin, response);
+    if(response=="y") {
+        itemDiscounted = true;
+    } else {
+        itemDiscounted = false;
+    }
+    std::unique_ptr<Item> newItem = ItemManager::createItem(itemCategory, itemName, itemPricePerUnit, itemQuantity, itemDiscounted);
+    currentList.lock()->addItem(std::move(newItem));
+    return true;
+}
+
 int main() {
     std::string cmd;
     ShoppingLists listMap;
@@ -193,9 +323,15 @@ int main() {
     std::cout << "Shopping List Manager" << std::endl;
     do {
         if(!currentUser.expired()) {
-            std::cout << std::endl << "Logged User: " << currentUser.lock()->getName()
-                        << ", currentLists: " << currentUser.lock()->getNumberOfLists()
-                        << ", currentItems: " << currentUser.lock()->getNumberOfItemsToBuy() << std::endl;
+            std::cout << std::endl << "-Logged User: " << currentUser.lock()->getName()
+                        << ", number of lists: " << currentUser.lock()->getNumberOfLists()
+                        << ", total items: " << currentUser.lock()->getNumOfItemsUsingQuantity() << std::endl;
+        }
+        if(!currentList.expired()) {
+            std::cout << "-Selected List: " << currentList.lock()->getListName()
+                        << ", Id: " << currentList.lock()->getListId()
+                        << ", items: " << currentList.lock()->getListSize() << std::endl;
+
         }
         std::cout << "Insert a command >> ";
         getline(std::cin, cmd);
@@ -227,6 +363,18 @@ int main() {
         if(cmd == "printAllLists") {
             printAllLists(currentUser);
         } else
+        if(cmd == "removeList") {
+            removeList(listMap, currentUser);
+        } else
+        if(cmd == "selectList") {
+            selectList(listMap, currentUser, currentList);
+        } else
+        if(cmd == "addItem") {
+            addItem(currentList);
+        } else
+        /*if(cmd == "removeItem") {
+            removeItem(currentList);
+        } else*/
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;
         }
