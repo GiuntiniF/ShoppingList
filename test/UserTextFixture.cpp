@@ -5,9 +5,9 @@
 #include "../headers/MeatAndChickenItem.h"
 #include "../headers/VegetableAndFruitItem.h"
 #include "../headers/ItemList.h"
+#include "../headers/ItemManager.h"
 #include "../headers/User.h"
 
-//TODO aggiungi test per pattern Observer
 class UserSuite : public ::testing::Test {
 protected:
     void SetUp() override {
@@ -18,13 +18,13 @@ protected:
         list2->addItem(std::move(item6));
     }
     std::shared_ptr<ItemList> list1 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item1 = std::make_unique<MeatAndChickenItem>();
-    std::unique_ptr<Item> item2 = std::make_unique<MeatAndChickenItem>("Turkey", 2, 3);
-    std::unique_ptr<Item> item3 = std::make_unique<VegetableAndFruitItem>("Salad", 3, 3);
+    std::unique_ptr<Item> item1 = ItemManager::createItem(0, "Steak", 12, 1);
+    std::unique_ptr<Item> item2 = ItemManager::createItem(1, "Turkey", 2, 3);
+    std::unique_ptr<Item> item3 = ItemManager::createItem(1,"Salad", 3, 3);
 
     std::shared_ptr<ItemList> list2 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item5 = std::make_unique<MeatAndChickenItem>("Chicken", 5, 10);
-    std::unique_ptr<Item> item6 = std::make_unique<MeatAndChickenItem>("Meat", 1, 1);
+    std::unique_ptr<Item> item5 = ItemManager::createItem(0, "Chicken", 5, 10);
+    std::unique_ptr<Item> item6 = ItemManager::createItem(0, "Meat", 1, 1);
 };
 
 TEST_F(UserSuite, DefaultConstructor) {
@@ -53,18 +53,26 @@ TEST_F(UserSuite, getListInfo) {
 }
 
 TEST_F(UserSuite, testObserverPattern) {
-    User myuser = User("Test");
-    ASSERT_FALSE(myuser.getListInfo(-1));
-    ASSERT_EQ(0, myuser.getNumberOfItemsToBuy());
-    ASSERT_EQ(0, myuser.getNumberOfLists());
+    std::shared_ptr<User> myuser = std::make_shared<User>("Test");
+    ASSERT_FALSE(myuser->getListInfo(-1));
+    ASSERT_EQ(0, myuser->getNumberOfLists());
+    ASSERT_EQ(0, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(0, myuser->getNumOfItemsUsingQuantity());
     int mylistid = list1->getListId();
-    myuser.addList(list1);
-    ASSERT_EQ(3, myuser.getNumberOfItemsToBuy());
-    ASSERT_EQ(1, myuser.getNumberOfLists());
-    myuser.addList(list2);
-    ASSERT_EQ(5, myuser.getNumberOfItemsToBuy());
-    ASSERT_EQ(2, myuser.getNumberOfLists());
-    myuser.removeList(mylistid);
-    ASSERT_EQ(2, myuser.getNumberOfItemsToBuy());
-    ASSERT_EQ(1, myuser.getNumberOfLists());
+    myuser->addList(list1);
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(3, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(7, myuser->getNumOfItemsUsingQuantity());
+    myuser->getLists().find(mylistid)->second->addItem(ItemManager::createItem(1, "Turkey", 2, 3));
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(4, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(10, myuser->getNumOfItemsUsingQuantity());
+    myuser->addList(list2);
+    ASSERT_EQ(2, myuser->getNumberOfLists());
+    ASSERT_EQ(6, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(21, myuser->getNumOfItemsUsingQuantity());
+    myuser->removeList(mylistid);
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(2, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(11, myuser->getNumOfItemsUsingQuantity());
 }
