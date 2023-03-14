@@ -17,5 +17,5 @@ void NullItem::setName(const std::string &name) {}
 
 void NullItem::setBasePrice(float basePrice) {}
 
-void NullItem::setQuantity(float quantity) {}
+void NullItem::setQuantity(int quantity) {}
 

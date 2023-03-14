@@ -20,7 +20,7 @@ public:
 
     void setBasePrice(float basePrice) override;
 
-    void setQuantity(float quantity) override;
+    void setQuantity(int quantity) override;
 
     ~NullItem() override = default;
 };
