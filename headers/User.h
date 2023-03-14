@@ -14,8 +14,11 @@
 #include <algorithm>
 #include "ItemList.h"
 
-class User : public Observer {
+class User : public Observer, public std::enable_shared_from_this<User> {
 public:
+    int getNumberOfItemsAdded() const;
+    int getNumOfItemsUsingQuantity() const;
+    int getNumberOfLists() const;
     explicit User(std::string name);
 
     int getUserId() const;
@@ -29,7 +32,6 @@ public:
     static int getUsersCount();
 
     const std::map<int, std::shared_ptr<ItemList>> & getLists() const;
-    int getNumberOfItemsToBuy() const;
 
     void update() override;
 
@@ -42,10 +44,9 @@ private:
     int userId;
     static int usersCount;
     std::string name;
-    int numberOfItemsToBuy = 0;
+    int numberOfItemsAdded = 0;
     int numberOfLists = 0;
-public:
-    int getNumberOfLists() const;
+    int numOfItemsUsingQuantity = 0;
 };
 
 

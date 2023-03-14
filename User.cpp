@@ -30,10 +30,12 @@ bool User::addList(std::shared_ptr<ItemList> &list) {
 bool User::removeList(int key) {
     auto itr = lists.find(key);
     std::shared_ptr<ItemList> myList = itr->second;
-    if(itr == lists.end()) return false;
+    if(itr == lists.end()) {
+        std::cout << "No list with given listId" << std::endl;
+        return false;
+    }
     lists.erase(key);
     detach(std::move(myList));
-    //update();
     return true;
 }
 
@@ -61,7 +63,7 @@ bool User::getListInfo(int listId) const {
     else {
         auto myList = lists.find(listId);
         if(myList == lists.end()) {
-            std::cout << "No item with given listId" << std::endl;
+            std::cout << "No list with given listId" << std::endl;
             return false;
         } else {
             myList->second->printList();
@@ -83,30 +85,31 @@ int User::getUsersCount() {
 }
 
 void User::update() {
-    numberOfItemsToBuy = 0;
+    numOfItemsUsingQuantity = 0;
+    numberOfItemsAdded = 0;
     numberOfLists = 0;
     for(auto &list : lists) {
-        numberOfItemsToBuy += list.second->getListSize();
+        std::cout << "list name: "<< list.second->getListName() << " , list size: "<<  list.second->getListSize() << std::endl;
+        numberOfItemsAdded += list.second->getListSize();
+        for(auto &item : list.second->getItems()) {
+            numOfItemsUsingQuantity += item->getQuantity();
+        }
         numberOfLists++;
     }
 }
 
 void User::attach(std::shared_ptr<Subject> list) {
     if(list) {
-        list->subscribe(std::make_shared<User>(*this));
+        list->subscribe(this->weak_from_this());
         update();
     }
 }
 
 void User::detach(std::shared_ptr<Subject> list) {
     if(list) {
-        list->unsubscribe(std::make_shared<User>(*this));
+        list->unsubscribe(this->weak_from_this());
         update();
     }
-}
-
-int User::getNumberOfItemsToBuy() const {
-    return numberOfItemsToBuy;
 }
 
 const std::map<int, std::shared_ptr<ItemList>> & User::getLists() const {
@@ -115,5 +118,13 @@ const std::map<int, std::shared_ptr<ItemList>> & User::getLists() const {
 
 int User::getNumberOfLists() const {
     return numberOfLists;
+}
+
+int User::getNumberOfItemsAdded() const {
+    return numberOfItemsAdded;
+}
+
+int User::getNumOfItemsUsingQuantity() const {
+    return numOfItemsUsingQuantity;
 }
 
