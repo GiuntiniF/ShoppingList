@@ -31,7 +31,7 @@ void help() {
     std::cout << std::endl;
     std::cout << "---ITEM RELATED COMMANDS---" << std::endl;
     /*
-     * std::cout << "rename: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
+     * std::cout << "renameItem: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
      * std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
      * std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
     */
