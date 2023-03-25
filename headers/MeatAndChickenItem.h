@@ -10,7 +10,7 @@
 class MeatAndChickenItem : public Item {
 public:
 
-    explicit MeatAndChickenItem(std::string name = "Chicken", float basePrice = 5, float quantity = 1, bool discounted = false);
+    explicit MeatAndChickenItem(std::string name = "Chicken", float basePrice = 5, float quantity = 1);
 
     double calculatePrice() const override;
 

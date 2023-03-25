@@ -1,7 +1,7 @@
 //
 // Created by francesco on 12/23/22.
 //
-//TODO implementare pattern Observer per tener traccia del numero totale di oggetti da acquistare (complessivo, non per singola lista)
+
 #include "headers/User.h"
 
 int User::usersCount = 0;

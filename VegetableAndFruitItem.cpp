@@ -4,14 +4,13 @@
 
 #include "headers/VegetableAndFruitItem.h"
 
-VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUnit, float quantity, bool discounted) :
+VegetableAndFruitItem::VegetableAndFruitItem(std::string name, float pricePerUnit, float quantity) :
         Item(
                 std::move(name),
                 pricePerUnit,
-                quantity,
-                discounted) {}
+                quantity) {}
 
 double VegetableAndFruitItem::calculatePrice() const {
-    return discounted ? (Item::calculatePrice() * 0.6) : Item::calculatePrice();
+    return (quantity >= 10) ? (Item::calculatePrice() * 0.6) : Item::calculatePrice();
 }
 

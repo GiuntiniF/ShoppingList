@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 #include <map>
+#include <vector>
 #include "Item.h"
 #include "Subject.h"
 
@@ -23,10 +24,9 @@ public:
     int getListSize() const;
     void addItem(std::shared_ptr<Item> item);
     std::string printList() const;
-    void removeItem();
     void removeItem(int index);
-    std::shared_ptr<Item> getItem(int index) const;
-    const std::list<std::shared_ptr<Item>> &getItems() const;
+    std::weak_ptr<Item> getItem(int index) const;
+    const std::vector<std::shared_ptr<Item>> & getItems() const;
 
     static int getListIdCounter();
 
@@ -37,7 +37,7 @@ public:
 private:
     int listId;
     std::string listName;
-    std::list<std::shared_ptr<Item>> items;
+    std::vector<std::shared_ptr<Item>> items;
     std::list<std::weak_ptr<Observer>> userList;
 
     static int listIdCounter;

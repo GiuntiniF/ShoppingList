@@ -6,19 +6,19 @@
 #include "../headers/ItemManager.h"
 
 TEST(ItemManager, InitItem) {
-    auto meat = ItemManager::createItem(0, "Turket", 3, 4, false);
-    ASSERT_EQ(meat->calculatePrice(), 12);
-    meat->setDiscounted(true);
-    ASSERT_EQ(meat->calculatePrice(), 12); // Meat and Chicken per essere scontata deve avere almeno 5 elementi
+    ItemManager itemManager;
+    auto meat = itemManager.createItem(1, "Turket", 3, 4);
+    ASSERT_EQ(12, meat->calculatePrice()); // Meat and Chicken per essere scontata deve avere almeno 5 elementi
     meat->setQuantity(5);
-    ASSERT_EQ(meat->calculatePrice(), 15*0.8);
-    auto apple = ItemManager::createItem(1, "Apple", 1, 6, true);
+    ASSERT_EQ(15*0.8, meat->calculatePrice());
+    auto apple = itemManager.createItem(2, "Apple", 1, 6);
     ASSERT_EQ(apple->calculatePrice(), 6*0.6);
 }
 
 TEST(ItemManager, InitInvalid) {
-    auto invalid1 = ItemManager::createItem(12, "Turket", 3, 4, false);
+    ItemManager itemManager;
+    auto invalid1 = itemManager.createItem(12, "Turket", 3, 4);
     ASSERT_EQ(invalid1->calculatePrice(), 0);
-    auto invalid2 = ItemManager::createItem(1, "applefake", 0, 2, true);
+    auto invalid2 = itemManager.createItem(2, "applefake", 0, 2);
     ASSERT_EQ(invalid2->calculatePrice(), 0);
 }

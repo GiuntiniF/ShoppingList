@@ -3,17 +3,15 @@
 //
 
 #include "headers/Item.h"
-#include "headers/NullItem.h"
 
 #include <utility>
 #include <algorithm>
 #include <stdexcept>
-#include <iostream>
 
 int Item::itemCount = 0;
 
-Item::Item(std::string name, float pricePerUnit, float quantity, bool discounted)
-    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted), itemInList(false) {
+Item::Item(std::string name, float pricePerUnit, int quantity, bool discounted)
+    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted) {
     Item::itemCount++;
     itemId = Item::itemCount;
 }
@@ -26,7 +24,7 @@ const std::string &Item::getName() const {
 }
 
 void Item::setName(const std::string &name) {
-    Item::name = name;
+    this->name = name;
 }
 
 float Item::getBasePrice() const {
@@ -34,7 +32,7 @@ float Item::getBasePrice() const {
 }
 
 void Item::setBasePrice(float basePrice) {
-    Item::pricePerUnit = basePrice;
+    this->pricePerUnit = basePrice;
 }
 
 int Item::getQuantity() const {
@@ -42,7 +40,7 @@ int Item::getQuantity() const {
 }
 
 void Item::setQuantity(int quantity) {
-    Item::quantity = quantity;
+    this->quantity = quantity;
 }
 
 double Item::calculatePrice() const {
@@ -53,19 +51,4 @@ std::string Item::getItemInfo() const {
     return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
 }
 
-bool Item::isItemInList() const {
-    return itemInList;
-}
 
-void Item::setItemInList(bool isItemInList) {
-    Item::itemInList = isItemInList;
-}
-
-
-bool Item::isDiscounted() const {
-    return discounted;
-}
-
-void Item::setDiscounted(bool discounted) {
-    this->discounted = discounted;
-}

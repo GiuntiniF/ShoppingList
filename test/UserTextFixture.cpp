@@ -17,14 +17,15 @@ protected:
         list2->addItem(std::move(item5));
         list2->addItem(std::move(item6));
     }
+    ItemManager itemManager;
     std::shared_ptr<ItemList> list1 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item1 = ItemManager::createItem(0, "Steak", 12, 1);
-    std::unique_ptr<Item> item2 = ItemManager::createItem(1, "Turkey", 2, 3);
-    std::unique_ptr<Item> item3 = ItemManager::createItem(1,"Salad", 3, 3);
+    std::unique_ptr<Item> item1 = itemManager.createItem(1, "Steak", 12, 1);
+    std::unique_ptr<Item> item2 = itemManager.createItem(2, "Turkey", 2, 3);
+    std::unique_ptr<Item> item3 = itemManager.createItem(2, "Salad", 3, 3);
 
     std::shared_ptr<ItemList> list2 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item5 = ItemManager::createItem(0, "Chicken", 5, 10);
-    std::unique_ptr<Item> item6 = ItemManager::createItem(0, "Meat", 1, 1);
+    std::unique_ptr<Item> item5 = itemManager.createItem(1, "Chicken", 5, 10);
+    std::unique_ptr<Item> item6 = itemManager.createItem(1, "Meat", 1, 1);
 };
 
 TEST_F(UserSuite, DefaultConstructor) {
@@ -63,7 +64,7 @@ TEST_F(UserSuite, testObserverPattern) {
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(3, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(7, myuser->getNumOfItemsUsingQuantity());
-    myuser->getLists().find(mylistid)->second->addItem(ItemManager::createItem(1, "Turkey", 2, 3));
+    myuser->getLists().find(mylistid)->second->addItem(itemManager.createItem(1, "Turkey", 2, 3));
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(4, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(10, myuser->getNumOfItemsUsingQuantity());

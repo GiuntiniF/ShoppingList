@@ -18,9 +18,6 @@ public:
     virtual void setBasePrice(float basePrice);
     int getQuantity() const;
     virtual void setQuantity(int quantity);
-    const std::string &getCategoryName() const;
-    bool isItemInList() const;
-    void setItemInList(bool isItemInList);
 
     virtual double calculatePrice() const;
 
@@ -28,18 +25,13 @@ public:
 
     virtual ~Item() = default;
 
-    bool isDiscounted() const;
-
-    void setDiscounted(bool isDiscounted);
-
 protected:
-    Item(std::string name, float pricePerUnit, float quantity, bool discounted = false);
+    Item(std::string name, float pricePerUnit, int quantity, bool discounted = false);
     int itemId;
     std::string name;
     float pricePerUnit;
     int quantity;
     bool discounted;
-    bool itemInList;
     static int itemCount;
 };
 

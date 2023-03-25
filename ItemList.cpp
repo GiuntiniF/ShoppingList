@@ -3,6 +3,7 @@
 //
 
 #include "headers/ItemList.h"
+#include "headers/NullItem.h"
 
 #include <utility>
 #include <algorithm>
@@ -32,8 +33,7 @@ void ItemList::setListName(const std::string &listName) {
 }
 
 void ItemList::addItem(std::shared_ptr<Item> item) {
-    items.push_back(std::move(item));
-    items.back()->setItemInList(true);
+    items.push_back( std::move(item));
     this->notify();
 }
 
@@ -41,10 +41,10 @@ std::string ItemList::printList() const {
     std::string listOutput;
     if(!items.empty())
     {
-        int index = 1;
+        int pos = 1;
         for(const auto& item : items) {
-            listOutput += item->getItemInfo();
-            index++;
+            std::cout << "(" << pos << ") " << item->getItemInfo() << std::endl;
+            pos++;
         }
     } else
     {
@@ -53,30 +53,32 @@ std::string ItemList::printList() const {
     return listOutput;
 }
 
-void ItemList::removeItem() {
-    if(!items.empty()) {
-        items.pop_back();
-        this->notify();
-    } else {
-        std::cout << listName << " is already empty" << std::endl;
-    }
-}
-
 void ItemList::removeItem(int index) {
     if(!items.empty()) {
-        auto itr = items.begin();
-        advance(itr, index - 1);
-        items.erase(itr);
+        if(index <= 0 || index > items.size()) {
+            std::cout << "Insert a valid position" << std::endl;
+            return;
+        }
+        items.erase(items.begin() + (index - 1));
         this->notify();
     } else {
         std::cout << listName << " is already empty" << std::endl;
     }
 }
-
-std::shared_ptr<Item> ItemList::getItem(int index) const {
-    auto itr = items.begin();
-    advance(itr, index - 1);
-    return *itr;
+//TODO finisci di gtestare e sistema la selectItem
+std::weak_ptr<Item> ItemList::getItem(int index) const {
+    if(!items.empty()) {
+        if(index <= 0 || index > items.size()) {
+            std::cout << "Insert a valid position " << std::endl;
+            return std::shared_ptr<Item>(new NullItem);
+        }
+        std::cout << index << std::endl;
+        auto my = items[(index-1)];
+        return my;
+    } else {
+        std::cout << listName << " is empty" << std::endl;
+    }
+    return std::shared_ptr<Item>(new NullItem);
 }
 int ItemList::getListIdCounter() {
     return listIdCounter;
@@ -115,6 +117,6 @@ void ItemList::notify() {
     }
 }
 
-const std::list<std::shared_ptr<Item>> &ItemList::getItems() const {
+const std::vector<std::shared_ptr<Item>> & ItemList::getItems() const {
     return items;
 }

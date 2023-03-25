@@ -4,13 +4,12 @@
 
 #include "headers/MeatAndChickenItem.h"
 
-MeatAndChickenItem::MeatAndChickenItem(std::string name, float pricePerUnit, float quantity, bool discounted) :
+MeatAndChickenItem::MeatAndChickenItem(std::string name, float pricePerUnit, float quantity) :
         Item(
                 std::move(name),
                 pricePerUnit,
-                quantity,
-                discounted) {}
+                quantity) {}
 
 double MeatAndChickenItem::calculatePrice() const {
-    return (quantity >= 5 && discounted) ? (Item::calculatePrice() * 0.8) : Item::calculatePrice();
+    return (quantity >= 5) ? (Item::calculatePrice() * 0.8) : Item::calculatePrice();
 }

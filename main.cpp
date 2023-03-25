@@ -8,9 +8,6 @@
 typedef std::map<int, std::shared_ptr<User>> UserList;
 typedef std::map<int, std::weak_ptr<ItemList>> ShoppingLists;
 
-//TODO stampare seriale e messaggio quando si aggiunge un user con successo
-//TODO aggiungere funzione removeList per rimuovere una lista da uno user e cancellarla con la funzione clearListMap(key) usando overload per esaminare solo quella lista invecew di tutta la mappa se era l'ultimo user a possedere quella lista
-
 //TODO finire funzioni per modificare item in lista
 //TODO rimuovere parti inutilizzate
 void help() {
@@ -29,19 +26,35 @@ void help() {
     std::cout << "---LIST RELATED COMMANDS---" << std::endl;
     std::cout << "selectList: selects one of the users list to work with (must be logged as said user)" << std::endl;
     std::cout << "addItem: adds a new item to the selected list (said list must be selected first using the selectList command)" << std::endl;
-    //std::cout << "selectItem: selects one of the items of the list to work with (said list must be selected first using the selectList command)" << std::endl;
-    //std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
+    std::cout << "selectItem: selects one of the items of the list to work with (said list must be selected first using the selectList command)" << std::endl;
+    std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
     std::cout << std::endl;
+    std::cout << "---ITEM RELATED COMMANDS---" << std::endl;
+    /*
+     * std::cout << "rename: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
+     * std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
+     * std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
+    */
     std::cout << "---GENERAL COMMANDS---" << std::endl;
     std::cout << "exit: close the application" << std::endl;
 }
 
 void notLoggedError() {
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
     std::cout << "You are not logged as an user" << std::endl;
 }
 
 void noListSelectedError() {
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
     std::cout << "No List has been selected" << std::endl;
+}
+
+void noItemSelectedError() {
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+    std::cout << "No Item has been selected" << std::endl;
 }
 
 void clearListMap(ShoppingLists& listMap) {
@@ -69,8 +82,9 @@ void addUser(UserList& userMap) {
     std::string newUsername;
     getline(std::cin, newUsername);
     std::unique_ptr<User> newUser = std::make_unique<User>(newUsername);
+    int myId = newUser->getUserId();
     userMap.insert(std::make_pair<int, std::unique_ptr<User>>(newUser->getUserId(), std::move(newUser)));
-    std::cout << std::endl;
+    std::cout << "User " << newUsername << " (userId: " << myId << ") was successfully added" << std::endl;
 }
 
 void printUsers(UserList& userMap) {
@@ -163,7 +177,7 @@ bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& cu
     int tmpListId;
     std::cin >> tmpListId;
     if(!tmpListId) {
-        std::cout << "Insert a valid list serial" << std::endl;
+        std::cout << "Insert a valid list id" << std::endl;
         std::cin.clear();
         std::cin.ignore(10000, '\n');
     } else
@@ -202,11 +216,11 @@ bool removeList(ShoppingLists& listMap, std::weak_ptr<User>& currentUser) {
         std::cout << "No list to delete" << std::endl;
         return false;
     }
-    std::cout << "Insert the serial of the list you want to delete >>" << std::endl;
+    std::cout << "Insert the Id of the list you want to delete >>" << std::endl;
     int tmpListId;
     std::cin >> tmpListId;
     if(!tmpListId) {
-        std::cout << "Insert a valid list serial" << std::endl;
+        std::cout << "Insert a valid list Id" << std::endl;
         std::cin.clear();
         std::cin.ignore(10000, '\n');
     } else
@@ -234,11 +248,11 @@ bool selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,s
         std::cout << "No list to select" << std::endl;
         return false;
     }
-    std::cout << "Insert the serial of the list you want to select >>" << std::endl;
+    std::cout << "Insert the Id of the list you want to select >>" << std::endl;
     int tmpListId;
     std::cin >> tmpListId;
     if(!tmpListId) {
-        std::cout << "Insert a valid list serial" << std::endl;
+        std::cout << "Insert a valid list Id" << std::endl;
         std::cin.clear();
         std::cin.ignore(10000, '\n');
     } else
@@ -252,7 +266,7 @@ bool selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,s
         if(itr != mylist.end()) {
             currentList = itr->second;
         } else {
-            std::cout << currentUser.lock()->getName() <<" doesn't have any list with the given serial" << std::endl;
+            std::cout << currentUser.lock()->getName() <<" doesn't have any list with the given Id" << std::endl;
             return false;
         }
     }
@@ -261,21 +275,31 @@ bool selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,s
     return true;
 }
 
-bool addItem(std::weak_ptr<ItemList>& currentList) {
+void printList(const std::weak_ptr<ItemList>& currentList) {
+    if(currentList.expired()) {
+        noListSelectedError();
+        return;
+    }
+    currentList.lock()->printList();
+}
+
+bool addItem(std::weak_ptr<ItemList>& currentList, ItemManager& itemManager) {
     if(currentList.expired()) {
         noListSelectedError();
         return false;
     }
-    int itemCategory = 0;
+    int itemCategory = -1;
     std::string itemName, response;
     float itemPricePerUnit = 0, itemQuantity = 0;
-    bool itemDiscounted = false;
     std::cout << "Select one of the following Item Categories by inserting their Id" << std::endl;
-    ItemManager::printCategories();
+    itemManager.printCategories();
     std::cout << " >>"<< std::endl;
     std::cin >> itemCategory;
-    if(!itemCategory) {
+    auto myCategories = itemManager.getCategories();
+    if(myCategories.find(itemCategory) == myCategories.end()) {
         std::cout << "insert a valid item category" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
         return false;
     }
     std::cin.clear();
@@ -284,6 +308,8 @@ bool addItem(std::weak_ptr<ItemList>& currentList) {
     std::getline(std::cin, itemName);
     if(itemName.empty()) {
         std::cout << "insert a valid item name" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
         return false;
     }
     std::cin.clear();
@@ -291,34 +317,78 @@ bool addItem(std::weak_ptr<ItemList>& currentList) {
     std::cin >> itemPricePerUnit;
     if(itemPricePerUnit<=0) {
         std::cout << "insert a valid price" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
         return false;
     }
     std::cout << "Insert how many of said items you want to add >>" << std::endl;
     std::cin >> itemQuantity;
     if(itemQuantity<=0) {
         std::cout << "insert a valid number" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
         return false;
     }
     std::cin.clear();
     std::cin.ignore(1000, '\n');
-    std::cout << "Is the item  you want to add discounted? (y/n) >>" << std::endl;
-    std::getline(std::cin, response);
-    if(response=="y") {
-        itemDiscounted = true;
-    } else {
-        itemDiscounted = false;
-    }
-    std::unique_ptr<Item> newItem = ItemManager::createItem(itemCategory, itemName, itemPricePerUnit, itemQuantity, itemDiscounted);
+    std::unique_ptr<Item> newItem = itemManager.createItem(itemCategory, itemName, itemPricePerUnit, itemQuantity);
     currentList.lock()->addItem(std::move(newItem));
     return true;
 }
 
+void selectItem(std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentList.expired()) {
+        noListSelectedError();
+        return;
+    }
+    if(currentList.lock()->getListSize() == 0) {
+        std::cout << "No item to select" << std::endl;
+        return;
+    }
+    int position = -1;
+    std::cout << "Insert the position of the item in the list that you want to select >>" << std::endl;
+    std::cin >> position;
+    if(position && position>0) {
+        if(position > currentList.lock()->getListSize()) {
+            std::cout << "Insert a valid position" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+            return;
+        }
+        currentItem.first = position;
+        currentItem.second = currentList.lock()->getItem(position);
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+    } else {
+        std::cout << "Insert a valid position" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        return;
+    }
+}
+
+void removeItem(std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    std::cout << "The current Item will be deleted, asre you sure you want to continue? (y,N)?" << std::endl;
+    std::string response;
+    std::getline(std::cin, response);
+    if(response=="y") {
+        currentList.lock()->removeItem(currentItem.first);
+        currentItem.second.reset();
+    }
+}
+
 int main() {
     std::string cmd;
+    ItemManager itemManager;
     ShoppingLists listMap;
     UserList userMap;
     std::weak_ptr<User> currentUser;
     std::weak_ptr<ItemList> currentList;
+    std::pair<int, std::weak_ptr<Item>> currentItem;
 
     std::cout << "Shopping List Manager" << std::endl;
     do {
@@ -332,6 +402,10 @@ int main() {
                         << ", Id: " << currentList.lock()->getListId()
                         << ", items: " << currentList.lock()->getListSize() << std::endl;
 
+        }
+        if(!currentItem.second.expired()) {
+            std::cout << "-Selected Item: " << currentItem.second.lock()->getName()
+                        << ", position: " << currentItem.second.lock()->getItemId() << std::endl;
         }
         std::cout << "Insert a command >> ";
         getline(std::cin, cmd);
@@ -363,18 +437,24 @@ int main() {
         if(cmd == "printAllLists") {
             printAllLists(currentUser);
         } else
-        if(cmd == "removeList") {
-            removeList(listMap, currentUser);
-        } else
         if(cmd == "selectList") {
             selectList(listMap, currentUser, currentList);
         } else
-        if(cmd == "addItem") {
-            addItem(currentList);
+        if(cmd == "removeList") {
+            removeList(listMap, currentUser);
         } else
-        /*if(cmd == "removeItem") {
-            removeItem(currentList);
-        } else*/
+        if(cmd == "printList") {
+            printList(currentList);
+        } else
+        if(cmd == "addItem") {
+            addItem(currentList, itemManager);
+        } else
+        if(cmd == "selectItem") {
+            selectItem(currentList, currentItem);
+        } else
+        if(cmd == "removeItem") {
+            removeItem(currentList, currentItem);
+        } else
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;
         }

@@ -5,19 +5,19 @@
 #ifndef SHOPPINGLIST_ITEMMANAGER_H
 #define SHOPPINGLIST_ITEMMANAGER_H
 
-
+//FIXME sostituire enum con mappa per fare controlli in main su categoria inserita
 #include <list>
+#include <map>
 #include "Item.h"
 
 class ItemManager {
 public:
-    static std::unique_ptr<Item> createItem(int category, const std::string& name, float pricePerUnit, float quantity, bool discounted = false);
-    static void printCategories();
+    ItemManager();
+    std::unique_ptr<Item> createItem(int category, const std::string &name, float pricePerUnit = 1, float quantity = 1);
+    void printCategories();
+    const std::map<int, std::string> &getCategories();
 private:
-    enum categories {
-        MEATANDCHICKEN = 0,
-        VEGETABLEANDFRUITS = 1,
-    };
+    std::map<int, std::string> categories;
 };
 
 
