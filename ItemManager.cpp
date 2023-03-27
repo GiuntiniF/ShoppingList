@@ -28,10 +28,10 @@ ItemManager::createItem(int category, const std::string &name, float pricePerUni
             return std::unique_ptr<Item>(new NullItem());
     }
 }
-//TODO sistema stampa per dipendere da oggetto creato in costruttore
 void ItemManager::printCategories() {
-    std::cout << "1 - Meat and Chicken" << std::endl;
-    std::cout << "2 - Vegetable and Fruits" << std::endl;
+    for(auto& category : categories) {
+        std::cout << category.first << " - " << category.second << std::endl;
+    }
 }
 
 const std::map<int, std::string> &ItemManager::getCategories() {

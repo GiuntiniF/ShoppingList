@@ -8,8 +8,6 @@
 typedef std::map<int, std::shared_ptr<User>> UserList;
 typedef std::map<int, std::weak_ptr<ItemList>> ShoppingLists;
 
-//TODO finire funzioni per modificare item in lista
-//TODO rimuovere parti inutilizzate
 void help() {
     std::cout << "---USER RELATED COMMANDS---" << std::endl;
     std::cout << "addUser: create a new User by adding the Username" << std::endl;
@@ -27,33 +25,27 @@ void help() {
     std::cout << "selectList: selects one of the users list to work with (must be logged as said user)" << std::endl;
     std::cout << "addItem: adds a new item to the selected list (said list must be selected first using the selectList command)" << std::endl;
     std::cout << "selectItem: selects one of the items of the list to work with (said list must be selected first using the selectList command)" << std::endl;
-    std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
     std::cout << std::endl;
     std::cout << "---ITEM RELATED COMMANDS---" << std::endl;
-    /*
-     * std::cout << "renameItem: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
-     * std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
-     * std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
-    */
+    std::cout << "renameItem: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
+    std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
+    std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
+    std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
+    std::cout << std::endl;
     std::cout << "---GENERAL COMMANDS---" << std::endl;
+    std::cout << "help: print this very helpful guide again" << std::endl;
     std::cout << "exit: close the application" << std::endl;
 }
 
 void notLoggedError() {
-    std::cin.clear();
-    std::cin.ignore(1000, '\n');
     std::cout << "You are not logged as an user" << std::endl;
 }
 
 void noListSelectedError() {
-    std::cin.clear();
-    std::cin.ignore(1000, '\n');
     std::cout << "No List has been selected" << std::endl;
 }
 
 void noItemSelectedError() {
-    std::cin.clear();
-    std::cin.ignore(1000, '\n');
     std::cout << "No Item has been selected" << std::endl;
 }
 
@@ -107,6 +99,7 @@ bool login(UserList& userMap, std::weak_ptr<User>& currentUser) {
         std::cin.ignore(10000, '\n');
     } else
     if(userMap.empty()) {
+        std::cout << "No user to login as has been inserted" << std::endl;
         std::cin.clear();
         std::cin.ignore(10000, '\n');
         return false;
@@ -173,6 +166,10 @@ bool addNewList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser) 
 }
 
 bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& currentUser) {
+    if(currentUser.expired()) {
+        notLoggedError();
+        return false;
+    }
     std::cout << "Insert the id of the list you want to add >>" << std::endl;
     int tmpListId;
     std::cin >> tmpListId;
@@ -381,6 +378,63 @@ void removeItem(std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_p
     }
 }
 
+void changePrice(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    float newPrice = 0;
+    std::cout << "Insert the new price of the item >>" << std::endl;
+    std::cin >> newPrice;
+    if(newPrice<=0) {
+        std::cout << "Insert a valid price" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        return;
+    }
+    currentItem.second.lock()->setBasePrice(newPrice);
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+}
+
+void renameItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    std::string newName;
+    std::cout << "Insert the new name of the item >>" << std::endl;
+    std::getline(std::cin, newName);
+    if(newName.empty()) {
+        std::cout << "Insert a valid name" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        return;
+    }
+    currentItem.second.lock()->setName(newName);
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+}
+
+void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    int newQuantity = 0;
+    std::cout << "Insert the new quantity of the item >>" << std::endl;
+    std::cin >> newQuantity;
+    if(newQuantity<=0) {
+        std::cout << "Insert a valid quantity" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        return;
+    }
+    currentItem.second.lock()->setQuantity(newQuantity);
+    std::cin.clear();
+    std::cin.ignore(1000, '\n');
+}
+
 int main() {
     std::string cmd;
     ItemManager itemManager;
@@ -390,7 +444,8 @@ int main() {
     std::weak_ptr<ItemList> currentList;
     std::pair<int, std::weak_ptr<Item>> currentItem;
 
-    std::cout << "Shopping List Manager" << std::endl;
+    std::cout << "SHOPPING LIST MANAGER" << std::endl;
+    std::cout << "if you need to, you can use the help command to see a list of all the possible action" << std::endl;
     do {
         if(!currentUser.expired()) {
             std::cout << std::endl << "-Logged User: " << currentUser.lock()->getName()
@@ -454,6 +509,15 @@ int main() {
         } else
         if(cmd == "removeItem") {
             removeItem(currentList, currentItem);
+        } else
+        if(cmd == "renameItem") {
+            renameItem(currentItem);
+        } else
+        if(cmd == "changePrice") {
+            changePrice(currentItem);
+        } else
+        if(cmd == "changeQuantity") {
+            changeQuantity(currentItem);
         } else
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;
