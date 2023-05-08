@@ -42,10 +42,15 @@ std::string ItemList::printList() const {
     if(!items.empty())
     {
         int pos = 1;
+        std::string output = "";
+        float totalPrice = 0;
         for(const auto& item : items) {
-            std::cout << "(" << pos << ") " << item->getItemInfo() << std::endl;
+            output += "(" + std::to_string(pos) + ") " + item->getItemInfo();
+            totalPrice += (float)item->calculatePrice();
             pos++;
         }
+        std::cout << "List Name: " << getListName() << ", serial: " << getListId() << ", number of items: " << getListSize() << ", total price: " << totalPrice << std::endl;
+        std::cout << output;
     } else
     {
         listOutput += "Empty List";
@@ -60,6 +65,7 @@ void ItemList::removeItem(int index) {
             return;
         }
         items.erase(items.begin() + (index - 1));
+
         this->notify();
     } else {
         std::cout << listName << " is already empty" << std::endl;

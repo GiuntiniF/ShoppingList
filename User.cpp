@@ -45,14 +45,13 @@ void User::printAllLists() const {
     {
         for(const auto& itr : lists) {
             auto list = itr.second;
-            r += "\nList Name: " + list->getListName() + ", serial: " + std::to_string(list->getListId()) + ", number of items: " + std::to_string(list->getListSize()) + "\n";
-            r += list->printList() + "\n-------------------------------------------------";
+            list->printList();
+            std::cout << std::endl << "-------------------------------------------------";
         }
     } else
     {
-        r += getName() + " has no lists";
+        std::cout << getName() << " has no lists";
     }
-    std::cout << r << std::endl;
 }
 
 bool User::getListInfo(int listId) const {
