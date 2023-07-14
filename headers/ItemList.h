@@ -23,7 +23,7 @@ public:
     void setListName(const std::string &listName);
     int getListSize() const;
     void addItem(std::shared_ptr<Item> item);
-    std::string printList() const;
+    void printList() const;
     void removeItem(int index);
     std::weak_ptr<Item> getItem(int index) const;
     const std::vector<std::shared_ptr<Item>> & getItems() const;

@@ -16,9 +16,10 @@ protected:
         c.addItem(std::move(item3));
     }
     ItemList c = ItemList();
-    std::unique_ptr<Item> item1 = std::make_unique<MeatAndChickenItem>();
-    std::unique_ptr<Item> item2 = std::make_unique<MeatAndChickenItem>("Turkey", 2, 3);
-    std::unique_ptr<Item> item3 = std::make_unique<VegetableAndFruitItem>();
+    //type set to 0 because we don't care about it at this level
+    std::unique_ptr<Item> item1 = std::make_unique<MeatAndChickenItem>("Pork",3,2,0);
+    std::unique_ptr<Item> item2 = std::make_unique<MeatAndChickenItem>("Turkey", 2,3,0);
+    std::unique_ptr<Item> item3 = std::make_unique<VegetableAndFruitItem>("Salad",1,5,0);
     int item1Id = item1->getItemId();
     int item2Id = item2->getItemId();
     int item3Id = item3->getItemId();

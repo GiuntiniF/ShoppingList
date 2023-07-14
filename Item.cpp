@@ -3,6 +3,7 @@
 //
 
 #include "headers/Item.h"
+#include "headers/ItemManager.h"
 
 #include <utility>
 #include <algorithm>
@@ -10,8 +11,8 @@
 
 int Item::itemCount = 0;
 
-Item::Item(std::string name, float pricePerUnit, int quantity, bool discounted)
-    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted) {
+Item::Item(std::string name, float pricePerUnit, int quantity, int type, bool discounted)
+    : name(std::move(name)), pricePerUnit(pricePerUnit), quantity(quantity), type(type), discounted(discounted) {
     Item::itemCount++;
     itemId = Item::itemCount;
 }
@@ -46,9 +47,14 @@ void Item::setQuantity(int quantity) {
 double Item::calculatePrice() const {
     return pricePerUnit * quantity;
 }
-
 std::string Item::getItemInfo() const {
-    return name + ": quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
+    ItemManager itemManager;
+    auto categories = itemManager.getCategories();
+    return name + ": id:" + std::to_string(itemId) + " - type:" + categories[type] + " - quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
+}
+
+int Item::getType() const {
+    return type;
 }
 
 

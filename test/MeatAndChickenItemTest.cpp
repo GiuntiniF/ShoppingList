@@ -4,16 +4,16 @@
 #include "gtest/gtest.h"
 
 #include "../headers/MeatAndChickenItem.h"
-
+/* REMOVED
 TEST(MeatAndChickenItem, DefaultConstructor) {
     MeatAndChickenItem c;
     ASSERT_EQ("Chicken", c.getName());
     ASSERT_EQ(5, c.getBasePrice());
     ASSERT_EQ(1, c.getQuantity());
 }
-
+*/
 TEST(MeatAndChickenItem, QuantityDiscount) {
-    MeatAndChickenItem c;
+    MeatAndChickenItem c(std::string(), 0, 0, 0);
     c.setQuantity(4);
     c.setBasePrice(20);
     ASSERT_EQ(20, c.getBasePrice());

@@ -194,6 +194,7 @@ bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& cu
         if(itr != listMap.end()) {
             std::shared_ptr<ItemList> tmpList = itr->second.lock();
             currentUser.lock()->addList(tmpList);
+            std::cout << "freui9bfcuibevberiviuerbdfvibefbvfr";
         } else {
             std::cout << "No list with the given id was found!" << std::endl;
         }
@@ -229,41 +230,42 @@ void removeList(ShoppingLists& listMap, std::weak_ptr<User>& currentUser, std::w
         }
     }
 }
-//FIXME sistema caso in cui non inserito id valido
-bool selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,std::weak_ptr<ItemList>& currentList) {
+
+void selectList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser,std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
     if(currentUser.expired()) {
         notLoggedError();
-        return false;
+        return;
     }
     if(currentUser.lock()->getNumberOfLists() == 0) {
         std::cout << "No list to select" << std::endl;
-        return false;
+        return;
     }
     std::cout << "Insert the Id of the list you want to select >>" << std::endl;
     int tmpListId;
     std::cin >> tmpListId;
     if(!tmpListId) {
         std::cout << "Insert a valid list Id" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
     } else
     if(listMap.empty()) {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
-        return false;
+        return;
     } else {
         auto mylist = currentUser.lock()->getLists();
         auto itr = mylist.find(tmpListId);
-        if(itr != mylist.end()) {
+        if (itr != mylist.end()) {
             currentList = itr->second;
+            currentItem.second.reset();
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            return;
         } else {
-            std::cout << currentUser.lock()->getName() <<" doesn't have any list with the given Id" << std::endl;
-            return false;
+            std::cout << currentUser.lock()->getName() << " doesn't have any list with the given Id" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            return;
         }
     }
-    std::cin.clear();
-    std::cin.ignore(10000, '\n');
-    return true;
 }
 
 void printList(const std::weak_ptr<ItemList>& currentList) {
@@ -363,7 +365,7 @@ void removeItem(std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_p
         noItemSelectedError();
         return;
     }
-    std::cout << "The current Item will be deleted, asre you sure you want to continue? (y,N)?" << std::endl;
+    std::cout << "The current Item will be deleted, are you sure you want to continue? (y,N)?" << std::endl;
     std::string response;
     std::getline(std::cin, response);
     if(response=="y") {

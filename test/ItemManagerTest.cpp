@@ -8,10 +8,12 @@
 TEST(ItemManager, InitItem) {
     ItemManager itemManager;
     auto meat = itemManager.createItem(1, "Turket", 3, 4);
+    ASSERT_EQ(1, meat->getType());
     ASSERT_EQ(12, meat->calculatePrice()); // Meat and Chicken per essere scontata deve avere almeno 5 elementi
     meat->setQuantity(5);
     ASSERT_EQ(15*0.8, meat->calculatePrice());
     auto apple = itemManager.createItem(2, "Apple", 1, 10);
+    ASSERT_EQ(2, apple->getType());
     ASSERT_EQ(apple->calculatePrice(), 10*0.6);
 }
 

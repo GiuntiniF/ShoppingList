@@ -37,25 +37,21 @@ void ItemList::addItem(std::shared_ptr<Item> item) {
     this->notify();
 }
 
-std::string ItemList::printList() const {
+void ItemList::printList() const {
     std::string listOutput;
-    if(!items.empty())
-    {
+    float totalPrice = 0;
+    if(!items.empty()) {
         int pos = 1;
-        std::string output = "";
-        float totalPrice = 0;
         for(const auto& item : items) {
-            output += "(" + std::to_string(pos) + ") " + item->getItemInfo();
+            listOutput += "(" + std::to_string(pos) + ") " + item->getItemInfo();
             totalPrice += (float)item->calculatePrice();
             pos++;
         }
-        std::cout << "List Name: " << getListName() << ", serial: " << getListId() << ", number of items: " << getListSize() << ", total price: " << totalPrice << std::endl;
-        std::cout << output;
-    } else
-    {
-        listOutput += "Empty List";
+    } else {
+        listOutput = "Empty List";
     }
-    return listOutput;
+    std::cout << "List Name: " << getListName() << ", serial: " << getListId() << ", number of items: " << getListSize() << ", total price: " << totalPrice << std::endl;
+    std::cout << listOutput << std::endl;
 }
 
 void ItemList::removeItem(int index) {
@@ -71,7 +67,6 @@ void ItemList::removeItem(int index) {
         std::cout << listName << " is already empty" << std::endl;
     }
 }
-//TODO finisci di gtestare e sistema la selectItem
 std::weak_ptr<Item> ItemList::getItem(int index) const {
     if(!items.empty()) {
         if(index <= 0 || index > items.size()) {

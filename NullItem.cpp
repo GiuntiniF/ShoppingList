@@ -5,7 +5,7 @@
 #include <iostream>
 #include "headers/NullItem.h"
 
-NullItem::NullItem() : Item("NULL", 0, 0, false) {}
+NullItem::NullItem() : Item("NULL", 0, 0, 0, false) {}
 
 double NullItem::calculatePrice() const {
     return 0;

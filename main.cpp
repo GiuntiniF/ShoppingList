@@ -4,7 +4,6 @@
 #include "headers/ItemList.h"
 #include "headers/ItemManager.h"
 #include "headers/User.h"
-//TODO fixa o elimina printList
 
 #include "CliLogic.cpp"
 int main() {
@@ -19,7 +18,6 @@ int main() {
     std::cout << "SHOPPING LIST MANAGER" << std::endl;
     std::cout << "if you need to, you can use the help command to see a list of all the possible action" << std::endl;
     do {
-        std::cout << listMap.size() << std::endl;
         if(!currentUser.expired()) {
             std::cout << std::endl << "-Logged User: " << currentUser.lock()->getName()
                         << ", number of lists: " << currentUser.lock()->getNumberOfLists()
@@ -37,7 +35,6 @@ int main() {
         }
         std::cout << "Insert a command >> ";
         getline(std::cin, cmd);
-        std::cout << std::endl;
         if(cmd == "help") {
             help();
         } else
@@ -66,7 +63,7 @@ int main() {
             printAllLists(currentUser);
         } else
         if(cmd == "selectList") {
-            selectList(listMap, currentUser, currentList);
+            selectList(listMap, currentUser, currentList, currentItem);
         } else
         if(cmd == "removeList") {
             removeList(listMap, currentUser, currentList, currentItem);

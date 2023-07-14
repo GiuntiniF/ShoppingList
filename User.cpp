@@ -43,15 +43,17 @@ void User::printAllLists() const {
     std::string r;
     if(!lists.empty())
     {
+        std::cout << "-------------------------------------------------" << std::endl;
         for(const auto& itr : lists) {
             auto list = itr.second;
             list->printList();
-            std::cout << std::endl << "-------------------------------------------------";
+            std::cout << "-------------------------------------------------";
         }
     } else
     {
         std::cout << getName() << " has no lists";
     }
+    std::cout << std::endl << std::endl;
 }
 
 bool User::getListInfo(int listId) const {
@@ -88,7 +90,6 @@ void User::update() {
     numberOfItemsAdded = 0;
     numberOfLists = 0;
     for(auto &list : lists) {
-        std::cout << "list name: "<< list.second->getListName() << " , list size: "<<  list.second->getListSize() << std::endl;
         numberOfItemsAdded += list.second->getListSize();
         for(auto &item : list.second->getItems()) {
             numOfItemsUsingQuantity += item->getQuantity();

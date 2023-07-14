@@ -10,7 +10,7 @@
 
 class VegetableAndFruitItem : public Item {
 public:
-    explicit VegetableAndFruitItem(std::string name = "Apple", float basePrice = 2, float quantity = 4);
+    explicit VegetableAndFruitItem(std::string name, float pricePerUnit, int quantity, int type);
 
     double calculatePrice() const override;
 
