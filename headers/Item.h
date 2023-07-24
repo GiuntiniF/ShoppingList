@@ -18,7 +18,7 @@ public:
     virtual void setBasePrice(float basePrice);
     int getQuantity() const;
     virtual void setQuantity(int quantity);
-
+    bool toggleDiscount();
     virtual double calculatePrice() const;
 
     virtual std::string getItemInfo() const;

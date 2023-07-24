@@ -25,13 +25,12 @@ int main() {
         }
         if(!currentList.expired()) {
             std::cout << "-Selected List: " << currentList.lock()->getListName()
-                        << ", Id: " << currentList.lock()->getListId()
-                        << ", items: " << currentList.lock()->getListSize() << std::endl;
+                        << ", Id:" << currentList.lock()->getListId()
+                        << ", items:" << currentList.lock()->getListSize() << std::endl;
 
         }
         if(!currentItem.second.expired()) {
-            std::cout << "-Selected Item: " << currentItem.second.lock()->getName()
-                        << ", position: " << currentItem.second.lock()->getItemId() << std::endl;
+            std::cout << "-Selected Item: " << currentItem.second.lock()->getItemInfo() << std::endl;
         }
         std::cout << "Insert a command >> ";
         getline(std::cin, cmd);
@@ -88,6 +87,9 @@ int main() {
         } else
         if(cmd == "changeQuantity") {
             changeQuantity(currentItem);
+        } else
+        if(cmd == "toggleDiscount") {
+            toggleDiscount(currentItem);
         } else
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;

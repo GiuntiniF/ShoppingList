@@ -21,4 +21,8 @@ TEST(MeatAndChickenItem, QuantityDiscount) {
     c.setQuantity(5);
     ASSERT_EQ(5, c.getQuantity());
     ASSERT_EQ(80, c.calculatePrice());
+    c.toggleDiscount();
+    ASSERT_EQ(5, c.getQuantity());
+    ASSERT_EQ(20, c.getBasePrice());
+    ASSERT_EQ(64, c.calculatePrice());
 }

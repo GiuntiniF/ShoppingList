@@ -44,17 +44,26 @@ void Item::setQuantity(int quantity) {
     this->quantity = quantity;
 }
 
+
 double Item::calculatePrice() const {
-    return pricePerUnit * quantity;
+    return discounted ? (pricePerUnit * quantity * 0.8) : (pricePerUnit * quantity);
 }
 std::string Item::getItemInfo() const {
     ItemManager itemManager;
     auto categories = itemManager.getCategories();
-    return name + ": id:" + std::to_string(itemId) + " - type:" + categories[type] + " - quantity:" + std::to_string(quantity) + " - price:" + std::to_string(calculatePrice()) + "\n";
+    std::string discounted_text;
+    if(discounted) {
+        discounted_text = " (discounted)";
+    }
+    return name + ": id:" + std::to_string(itemId) + " - type:" + categories[type] + " - quantity:" + std::to_string(quantity) + " - base price:" + std::to_string(getBasePrice()) + " - price:" + std::to_string(calculatePrice()) + discounted_text + "\n";
 }
 
 int Item::getType() const {
     return type;
 }
 
+bool Item::toggleDiscount() {
+    discounted = !discounted;
+    return discounted;
+}
 

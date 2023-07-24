@@ -20,4 +20,6 @@ TEST(VegetableAndFruitItem, DiscountedPrice) {
     ASSERT_EQ(26, c.calculatePrice());
     c.setQuantity(10);
     ASSERT_EQ(65*0.6, c.calculatePrice());
+    c.toggleDiscount();
+    ASSERT_EQ(65*0.8*0.6, c.calculatePrice());
 }
