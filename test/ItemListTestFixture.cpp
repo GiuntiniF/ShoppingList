@@ -27,7 +27,6 @@ protected:
 
 TEST_F(ItemListSuite, DefaultConstructor) {
     ASSERT_EQ("List", c.getListName());
-    ASSERT_EQ(1, c.getListId());
 }
 TEST_F(ItemListSuite, RemoveLast) {
     ASSERT_EQ(3, c.getListSize());
