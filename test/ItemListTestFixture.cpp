@@ -3,8 +3,6 @@
 //
 #include "gtest/gtest.h"
 
-#include "../headers/MeatAndChickenItem.h"
-#include "../headers/VegetableAndFruitItem.h"
 #include "../headers/ItemList.h"
 
 
@@ -17,9 +15,9 @@ protected:
     }
     ItemList c = ItemList();
     //type set to 0 because we don't care about it at this level
-    std::unique_ptr<Item> item1 = std::make_unique<MeatAndChickenItem>("Pork",3,2,0);
-    std::unique_ptr<Item> item2 = std::make_unique<MeatAndChickenItem>("Turkey", 2,3,0);
-    std::unique_ptr<Item> item3 = std::make_unique<VegetableAndFruitItem>("Salad",1,5,0);
+    std::unique_ptr<Item> item1 = std::make_unique<Item>("Pork",3,2);
+    std::unique_ptr<Item> item2 = std::make_unique<Item>("Turkey", 2,3);
+    std::unique_ptr<Item> item3 = std::make_unique<Item>("Salad",1,5);
     int item1Id = item1->getItemId();
     int item2Id = item2->getItemId();
     int item3Id = item3->getItemId();

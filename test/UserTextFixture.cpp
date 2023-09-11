@@ -2,10 +2,7 @@
 // Created by francesco on 12/26/22.
 //
 #include "gtest/gtest.h"
-#include "../headers/MeatAndChickenItem.h"
-#include "../headers/VegetableAndFruitItem.h"
 #include "../headers/ItemList.h"
-#include "../headers/ItemManager.h"
 #include "../headers/User.h"
 
 class UserSuite : public ::testing::Test {
@@ -17,15 +14,14 @@ protected:
         list2->addItem(std::move(item5));
         list2->addItem(std::move(item6));
     }
-    ItemManager itemManager;
     std::shared_ptr<ItemList> list1 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item1 = itemManager.createItem(1, "Steak", 12, 1);
-    std::unique_ptr<Item> item2 = itemManager.createItem(2, "Turkey", 2, 3);
-    std::unique_ptr<Item> item3 = itemManager.createItem(2, "Salad", 3, 3);
+    std::unique_ptr<Item> item1 = std::make_unique<Item>("Steak", 12, 1);
+    std::unique_ptr<Item> item2 = std::make_unique<Item>( "Turkey", 2, 3);
+    std::unique_ptr<Item> item3 = std::make_unique<Item>( "Salad", 3, 3);
 
     std::shared_ptr<ItemList> list2 = std::make_shared<ItemList>();
-    std::unique_ptr<Item> item5 = itemManager.createItem(1, "Chicken", 5, 10);
-    std::unique_ptr<Item> item6 = itemManager.createItem(1, "Meat", 1, 1);
+    std::unique_ptr<Item> item5 = std::make_unique<Item>("Chicken", 5, 10);
+    std::unique_ptr<Item> item6 = std::make_unique<Item>("Meat", 1, 1);
 };
 
 TEST_F(UserSuite, DefaultConstructor) {
@@ -64,7 +60,7 @@ TEST_F(UserSuite, testObserverPattern) {
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(3, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(7, myuser->getNumOfItemsUsingQuantity());
-    myuser->getLists().find(mylistid)->second->addItem(itemManager.createItem(1, "Turkey", 2, 3));
+    myuser->getLists().find(mylistid)->second->addItem(std::make_unique<Item>("Turkey", 2, 3));
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(4, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(10, myuser->getNumOfItemsUsingQuantity());

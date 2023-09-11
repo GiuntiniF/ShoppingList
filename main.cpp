@@ -2,13 +2,11 @@
 #include <iostream>
 #include "headers/Item.h"
 #include "headers/ItemList.h"
-#include "headers/ItemManager.h"
 #include "headers/User.h"
 
 #include "CliLogic.cpp"
 int main() {
     std::string cmd;
-    ItemManager itemManager;
     ShoppingLists listMap;
     UserList userMap;
     std::weak_ptr<User> currentUser;
@@ -71,7 +69,7 @@ int main() {
             printList(currentList);
         } else
         if(cmd == "addItem") {
-            addItem(currentList, itemManager);
+            addItem(currentList);
         } else
         if(cmd == "selectItem") {
             selectItem(currentList, currentItem);

@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(googletest)
 #definizione target come indicato sulla documentazione
 enable_testing()
 
-set(TEST_SOURCE_FILES runAllTests.cpp MeatAndChickenItemTest.cpp VegetableAndFruitItemTest.cpp NullItemTest.cpp ItemListTestFixture.cpp ItemManagerTest.cpp UserTextFixture.cpp)
+set(TEST_SOURCE_FILES runAllTests.cpp NullItemTest.cpp ItemListTestFixture.cpp UserTextFixture.cpp)
 add_executable(runShoppingListTests ${TEST_SOURCE_FILES})
 target_link_libraries(runShoppingListTests GTest::gtest_main ShoppingListCore)
 

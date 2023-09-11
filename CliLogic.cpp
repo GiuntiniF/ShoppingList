@@ -5,7 +5,6 @@
 #include <iostream>
 #include "headers/Item.h"
 #include "headers/ItemList.h"
-#include "headers/ItemManager.h"
 #include "headers/User.h"
 
 typedef std::map<int, std::shared_ptr<User>> UserList;
@@ -277,7 +276,7 @@ void printList(const std::weak_ptr<ItemList>& currentList) {
     currentList.lock()->printList();
 }
 
-bool addItem(std::weak_ptr<ItemList>& currentList, ItemManager& itemManager) {
+bool addItem(std::weak_ptr<ItemList> &currentList) {
     if(currentList.expired()) {
         noListSelectedError();
         return false;
@@ -285,19 +284,6 @@ bool addItem(std::weak_ptr<ItemList>& currentList, ItemManager& itemManager) {
     int itemCategory = -1;
     std::string itemName, response;
     float itemPricePerUnit = 0, itemQuantity = 0;
-    std::cout << "Select one of the following Item Categories by inserting their Id" << std::endl;
-    itemManager.printCategories();
-    std::cout << " >>"<< std::endl;
-    std::cin >> itemCategory;
-    auto myCategories = itemManager.getCategories();
-    if(myCategories.find(itemCategory) == myCategories.end()) {
-        std::cout << "insert a valid item category" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(1000, '\n');
-        return false;
-    }
-    std::cin.clear();
-    std::cin.ignore(1000, '\n');
     std::cout << "Insert the name of the item you want to add >>" << std::endl;
     std::getline(std::cin, itemName);
     if(itemName.empty()) {
@@ -325,7 +311,7 @@ bool addItem(std::weak_ptr<ItemList>& currentList, ItemManager& itemManager) {
     }
     std::cin.clear();
     std::cin.ignore(1000, '\n');
-    std::unique_ptr<Item> newItem = itemManager.createItem(itemCategory, itemName, itemPricePerUnit, itemQuantity);
+    std::unique_ptr<Item> newItem = std::make_unique<Item>(itemName, itemPricePerUnit, itemQuantity);
     currentList.lock()->addItem(std::move(newItem));
     return true;
 }
