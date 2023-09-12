@@ -75,10 +75,14 @@ void addUser(UserList& userMap) {
     std::cout << "Insert the username >>" << std::endl;
     std::string newUsername;
     getline(std::cin, newUsername);
-    std::unique_ptr<User> newUser = std::make_unique<User>(newUsername);
-    int myId = newUser->getUserId();
-    userMap.insert(std::make_pair<int, std::unique_ptr<User>>(newUser->getUserId(), std::move(newUser)));
-    std::cout << "User " << newUsername << " (userId: " << myId << ") was successfully added" << std::endl;
+    try {
+        std::unique_ptr<User> newUser = std::make_unique<User>(newUsername);
+        int myId = newUser->getUserId();
+        userMap.insert(std::make_pair<int, std::unique_ptr<User>>(newUser->getUserId(), std::move(newUser)));
+        std::cout << "User " << newUsername << " (userId: " << myId << ") was successfully added" << std::endl;
+    }   catch (const std::invalid_argument& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 }
 
 void printUsers(UserList& userMap) {
@@ -165,10 +169,14 @@ bool addNewList(ShoppingLists& listMap, const std::weak_ptr<User>& currentUser) 
     std::string listName;
     std::cout << "Insert the new list name >>" << std::endl;
     std::getline(std::cin, listName);
-    std::shared_ptr<ItemList> newList = std::make_shared<ItemList>(listName);
-    std::weak_ptr<ItemList> newList2 = newList;
-    listMap.insert(std::pair<int, std::weak_ptr<ItemList>>(newList->getListId(), std::move(newList2)));
-    currentUser.lock()->addList(newList);
+    try {
+        std::shared_ptr<ItemList> newList = std::make_shared<ItemList>(listName);
+        std::weak_ptr<ItemList> newList2 = newList;
+        listMap.insert(std::pair<int, std::weak_ptr<ItemList>>(newList->getListId(), std::move(newList2)));
+        currentUser.lock()->addList(newList);
+    }  catch (const std::invalid_argument& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
     return true;
 }
 
@@ -286,33 +294,37 @@ bool addItem(std::weak_ptr<ItemList> &currentList) {
     float itemPricePerUnit = 0, itemQuantity = 0;
     std::cout << "Insert the name of the item you want to add >>" << std::endl;
     std::getline(std::cin, itemName);
-    if(itemName.empty()) {
+    /*if(itemName.empty()) {
         std::cout << "insert a valid item name" << std::endl;
         std::cin.clear();
         std::cin.ignore(1000, '\n');
         return false;
-    }
+    }*/
     std::cin.clear();
     std::cout << "Insert the price per unit of the item you want to add >>" << std::endl;
     std::cin >> itemPricePerUnit;
-    if(itemPricePerUnit<=0) {
+    /*if(itemPricePerUnit<=0) {
         std::cout << "insert a valid price" << std::endl;
         std::cin.clear();
         std::cin.ignore(1000, '\n');
         return false;
-    }
+    }*/
     std::cout << "Insert how many of said items you want to add >>" << std::endl;
     std::cin >> itemQuantity;
-    if(itemQuantity<=0) {
+    /*if(itemQuantity<=0) {
         std::cout << "insert a valid quantity" << std::endl;
         std::cin.clear();
         std::cin.ignore(1000, '\n');
         return false;
-    }
+    }*/
     std::cin.clear();
     std::cin.ignore(1000, '\n');
-    std::unique_ptr<Item> newItem = std::make_unique<Item>(itemName, itemPricePerUnit, itemQuantity);
-    currentList.lock()->addItem(std::move(newItem));
+    try {
+        std::unique_ptr<Item> newItem = std::make_unique<Item>(itemName, itemPricePerUnit, itemQuantity);
+        currentList.lock()->addItem(std::move(newItem));
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
     return true;
 }
 

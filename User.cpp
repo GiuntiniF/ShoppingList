@@ -7,6 +7,9 @@
 int User::usersCount = 0;
 
 User::User(std::string name): name(std::move(name)) {
+    if (this->name.empty()) {
+        throw std::invalid_argument("User Name cannot be empty.");
+    }
     User::usersCount++;
     userId = User::usersCount;
 }
@@ -16,6 +19,10 @@ const std::string &User::getName() const {
 }
 
 void User::setName(const std::string &name) {
+    if (this->name.empty()) {
+        std::cerr << "User Name cannot be empty." << std::endl;
+        return;
+    }
     User::name = name;
 }
 

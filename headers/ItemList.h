@@ -18,7 +18,7 @@ public:
     explicit ItemList(std::string listName = "List");
 
     int getListId() const;
-    void setListId(int listId);
+
     const std::string &getListName() const;
     void setListName(const std::string &listName);
     int getListSize() const;

@@ -12,6 +12,9 @@
 int ItemList::listIdCounter = 0;
 
 ItemList::ItemList(std::string listName) : listName(std::move(listName)) {
+    if (this->listName.empty()) {
+        throw std::invalid_argument("List Name cannot be empty.");
+    }
     ItemList::listIdCounter++;
     listId = ItemList::listIdCounter;
 }
@@ -20,21 +23,25 @@ int ItemList::getListId() const {
     return listId;
 }
 
-void ItemList::setListId(int listId) {
-    ItemList::listId = listId;
-}
-
 const std::string &ItemList::getListName() const {
     return listName;
 }
 
 void ItemList::setListName(const std::string &listName) {
+    if (this->listName.empty()) {
+        std::cerr << "List Name cannot be empty." << std::endl;
+        return;
+    }
     ItemList::listName = listName;
 }
 
 void ItemList::addItem(std::shared_ptr<Item> item) {
-    items.push_back( std::move(item));
-    this->notify();
+    try {
+        items.push_back( std::move(item));
+        this->notify();
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 }
 
 void ItemList::printList() const {

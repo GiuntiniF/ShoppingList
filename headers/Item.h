@@ -11,7 +11,7 @@
 
 class Item {
 public:
-    Item(std::string name, float pricePerUnit, int quantity, bool discounted = false);
+    Item(const std::string &name, float pricePerUnit, int quantity, bool discounted = false);
     int getItemId() const;
     const std::string& getName() const;
     virtual void setName(const std::string &name);
@@ -26,12 +26,8 @@ public:
 
     virtual ~Item() = default;
 
-protected:
-    int itemId, type;
-public:
-    int getType() const;
-
-protected:
+private:
+    int itemId;
     std::string name;
     float pricePerUnit;
     int quantity;
