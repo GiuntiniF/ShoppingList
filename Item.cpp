@@ -11,8 +11,8 @@
 
 int Item::itemCount = 0;
 
-Item::Item(const std::string &name, float pricePerUnit, int quantity, bool discounted)
-    : name(name), pricePerUnit(pricePerUnit), quantity(quantity), discounted(discounted) {
+Item::Item(const std::string &name, float pricePerUnit, int quantity)
+    : name(name), pricePerUnit(pricePerUnit), quantity(quantity) {
     if (this->name.empty()) {
         throw std::invalid_argument("Name cannot be empty.");
     }
@@ -67,18 +67,9 @@ void Item::setQuantity(int quantity) {
 
 
 double Item::calculatePrice() const {
-    return discounted ? (pricePerUnit * quantity * 0.8) : (pricePerUnit * quantity);
+    return pricePerUnit * quantity;
 }
 std::string Item::getItemInfo() const {
-    std::string discounted_text;
-    if(discounted) {
-        discounted_text = " (discounted)";
-    }
-    return name + ": id:" + std::to_string(itemId) + " - quantity:" + std::to_string(quantity) + " - base price:" + std::to_string(getBasePrice()) + " - price:" + std::to_string(calculatePrice()) + discounted_text + "\n";
-}
-
-bool Item::toggleDiscount() {
-    discounted = !discounted;
-    return discounted;
+    return name + ": id:" + std::to_string(itemId) + " - quantity:" + std::to_string(quantity) + " - base price:" + std::to_string(getBasePrice()) + " - price:" + std::to_string(calculatePrice()) + "\n";
 }
 

@@ -11,7 +11,7 @@
 
 class Item {
 public:
-    Item(const std::string &name, float pricePerUnit, int quantity, bool discounted = false);
+    Item(const std::string &name, float pricePerUnit, int quantity);
     int getItemId() const;
     const std::string& getName() const;
     virtual void setName(const std::string &name);
@@ -19,7 +19,7 @@ public:
     virtual void setBasePrice(float basePrice);
     int getQuantity() const;
     virtual void setQuantity(int quantity);
-    bool toggleDiscount();
+
     virtual double calculatePrice() const;
 
     virtual std::string getItemInfo() const;
@@ -31,7 +31,6 @@ private:
     std::string name;
     float pricePerUnit;
     int quantity;
-    bool discounted;
     static int itemCount;
 };
 

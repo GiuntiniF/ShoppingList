@@ -31,7 +31,6 @@ void help() {
     std::cout << "renameItem: changes the name of an item (said item must be selected using the selectItem command)" << std::endl;
     std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
     std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
-    std::cout << "toggleDiscount: toggles the discount status of an item (said item must be selected using the selectItem command)" << std::endl;
     std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
     std::cout << std::endl;
     std::cout << "---GENERAL COMMANDS---" << std::endl;
@@ -426,17 +425,4 @@ void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
     currentItem.second.lock()->setQuantity(newQuantity);
     std::cin.clear();
     std::cin.ignore(1000, '\n');
-}
-
-void toggleDiscount(std::pair<int, std::weak_ptr<Item>>& currentItem) {
-    if(currentItem.second.expired()) {
-        noItemSelectedError();
-        return;
-    }
-    bool is_discounted = currentItem.second.lock()->toggleDiscount();
-    if(is_discounted) {
-        std::cout << "The item is now discounted"<< std::endl;
-    } else {
-        std::cout << "The item is not discounted anymore"<< std::endl;
-    }
 }
