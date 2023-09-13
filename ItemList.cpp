@@ -3,8 +3,6 @@
 //
 
 #include "headers/ItemList.h"
-#include "headers/NullItem.h"
-
 #include <utility>
 #include <algorithm>
 #include <iostream>
@@ -78,7 +76,7 @@ std::weak_ptr<Item> ItemList::getItem(int index) const {
     if(!items.empty()) {
         if(index <= 0 || index > items.size()) {
             std::cout << "Insert a valid position " << std::endl;
-            return std::shared_ptr<Item>(new NullItem);
+            return std::shared_ptr<Item>(nullptr);
         }
         std::cout << index << std::endl;
         auto my = items[(index-1)];
@@ -86,7 +84,7 @@ std::weak_ptr<Item> ItemList::getItem(int index) const {
     } else {
         std::cout << listName << " is empty" << std::endl;
     }
-    return std::shared_ptr<Item>(new NullItem);
+    return std::shared_ptr<Item>(nullptr);
 }
 int ItemList::getListIdCounter() {
     return listIdCounter;
