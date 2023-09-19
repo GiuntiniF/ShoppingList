@@ -14,24 +14,22 @@ public:
     Item(const std::string &name, float pricePerUnit, int quantity);
     int getItemId() const;
     const std::string& getName() const;
-    virtual void setName(const std::string &name);
+    void setName(const std::string &name);
     float getBasePrice() const;
-    virtual void setBasePrice(float basePrice);
+    void setBasePrice(float basePrice);
     int getQuantity() const;
-    virtual void setQuantity(int quantity);
-
-    virtual double calculatePrice() const;
-
-    virtual std::string getItemInfo() const;
-
-    virtual ~Item() = default;
-
+    void setQuantity(int quantity);
+    bool isBought() const;
+    void setIsBought(bool is_bought);
+    double calculatePrice() const;
+    std::string getItemInfo() const;
 private:
     int itemId;
     std::string name;
     float pricePerUnit;
     int quantity;
-    static int itemCount;
+    bool is_bought = false;
+    static int itemCount; //Usato per generare Id univoci autoincrementati per gli Item
 };
 
 

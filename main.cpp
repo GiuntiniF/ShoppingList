@@ -86,6 +86,12 @@ int main() {
         if(cmd == "changeQuantity") {
             changeQuantity(currentItem);
         } else
+        if(cmd == "checkItem") {
+            checkItem(currentItem);
+        } else
+        if(cmd == "uncheckItem") {
+            uncheckItem(currentItem);
+        } else
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;
         }

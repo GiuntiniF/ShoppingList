@@ -16,10 +16,10 @@ Item::Item(const std::string &name, float pricePerUnit, int quantity)
     if (this->name.empty()) {
         throw std::invalid_argument("Name cannot be empty.");
     }
-    if (pricePerUnit < 0.0) {
+    if (pricePerUnit <= 0.0) {
         throw std::invalid_argument("Price per unit cannot be negative.");
     }
-    if (quantity < 0) {
+    if (quantity <= 0) {
         throw std::invalid_argument("Quantity cannot be negative.");
     }
     Item::itemCount++;
@@ -65,11 +65,19 @@ void Item::setQuantity(int quantity) {
     this->quantity = quantity;
 }
 
+bool Item::isBought() const {
+    return is_bought;
+}
+
+void Item::setIsBought(bool is_bought) {
+    this->is_bought = is_bought;
+}
 
 double Item::calculatePrice() const {
     return pricePerUnit * quantity;
 }
 std::string Item::getItemInfo() const {
-    return name + ": id:" + std::to_string(itemId) + " - quantity:" + std::to_string(quantity) + " - base price:" + std::to_string(getBasePrice()) + " - price:" + std::to_string(calculatePrice()) + "\n";
+    return name + ": id:" + std::to_string(itemId) + " - quantity:" + std::to_string(quantity) + " - base price:" + std::to_string(getBasePrice()) + " - price:" + std::to_string(calculatePrice()) + (isBought() ? "(bought)" : "") + "\n";
 }
+
 

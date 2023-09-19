@@ -32,6 +32,8 @@ void help() {
     std::cout << "changePrice: changes the price per unit of an item (said item must be selected using the selectItem command)" << std::endl;
     std::cout << "changeQuantity: changes the quantity per unit of an item (said item must be selected using the selectItem command)" << std::endl;
     std::cout << "removeItem: removes an item from the selected list (said list must be selected first using the selectList command)" << std::endl;
+    std::cout << "checkItem: check an item in the list as bought (said list must be selected first using the selectList command)" << std::endl;
+    std::cout << "uncheckItem: check an item in the list as NOT bought (said list must be selected first using the selectList command)" << std::endl;
     std::cout << std::endl;
     std::cout << "---GENERAL COMMANDS---" << std::endl;
     std::cout << "help: print this very helpful guide again" << std::endl;
@@ -201,7 +203,6 @@ bool addExistingList(const ShoppingLists& listMap, const std::weak_ptr<User>& cu
         if(itr != listMap.end()) {
             std::shared_ptr<ItemList> tmpList = itr->second.lock();
             currentUser.lock()->addList(tmpList);
-            std::cout << "freui9bfcuibevberiviuerbdfvibefbvfr";
         } else {
             std::cout << "No list with the given id was found!" << std::endl;
         }
@@ -288,34 +289,15 @@ bool addItem(std::weak_ptr<ItemList> &currentList) {
         noListSelectedError();
         return false;
     }
-    int itemCategory = -1;
     std::string itemName, response;
     float itemPricePerUnit = 0, itemQuantity = 0;
     std::cout << "Insert the name of the item you want to add >>" << std::endl;
     std::getline(std::cin, itemName);
-    /*if(itemName.empty()) {
-        std::cout << "insert a valid item name" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(1000, '\n');
-        return false;
-    }*/
     std::cin.clear();
     std::cout << "Insert the price per unit of the item you want to add >>" << std::endl;
     std::cin >> itemPricePerUnit;
-    /*if(itemPricePerUnit<=0) {
-        std::cout << "insert a valid price" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(1000, '\n');
-        return false;
-    }*/
     std::cout << "Insert how many of said items you want to add >>" << std::endl;
     std::cin >> itemQuantity;
-    /*if(itemQuantity<=0) {
-        std::cout << "insert a valid quantity" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(1000, '\n');
-        return false;
-    }*/
     std::cin.clear();
     std::cin.ignore(1000, '\n');
     try {
@@ -425,4 +407,30 @@ void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
     currentItem.second.lock()->setQuantity(newQuantity);
     std::cin.clear();
     std::cin.ignore(1000, '\n');
+}
+
+void checkItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    if(currentItem.second.lock()->isBought()) {
+        std::cout << currentItem.second.lock()->getName() << " is already checked" << std::endl;
+        return;
+    }
+    currentItem.second.lock()->setIsBought(true);
+    std::cout << currentItem.second.lock()->getName() << " is now checked" << std::endl;
+}
+
+void uncheckItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+    if(currentItem.second.expired()) {
+        noItemSelectedError();
+        return;
+    }
+    if(!currentItem.second.lock()->isBought()) {
+        std::cout << currentItem.second.lock()->getName() << " is already not checked" << std::endl;
+        return;
+    }
+    currentItem.second.lock()->setIsBought(false);
+    std::cout << currentItem.second.lock()->getName() << " is now unchecked" << std::endl;
 }
