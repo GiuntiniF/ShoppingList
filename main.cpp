@@ -19,12 +19,14 @@ int main() {
         if(!currentUser.expired()) {
             std::cout << std::endl << "-Logged User: " << currentUser.lock()->getName()
                         << ", number of lists: " << currentUser.lock()->getNumberOfLists()
-                        << ", total items: " << currentUser.lock()->getNumOfItemsUsingQuantity() << std::endl;
+                        << ", total items: " << currentUser.lock()->getNumOfItemsUsingQuantity()
+                        << ", items left to buy: " << currentUser.lock()->getNumberOfItemsLeftToBuy() << std::endl;
         }
         if(!currentList.expired()) {
             std::cout << "-Selected List: " << currentList.lock()->getListName()
                         << ", Id:" << currentList.lock()->getListId()
-                        << ", items:" << currentList.lock()->getListSize() << std::endl;
+                        << ", items left to buy:" << currentList.lock()->getListSizeToBuyOnly()
+                        << ", total items:" << currentList.lock()->getListSize() << std::endl;
 
         }
         if(!currentItem.second.expired()) {

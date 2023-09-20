@@ -100,11 +100,15 @@ int User::getUsersCount() {
 void User::update() {
     numOfItemsUsingQuantity = 0;
     numberOfItemsAdded = 0;
+    numberOfItemsLeftToBuy = 0;
     numberOfLists = 0;
     for(auto &list : lists) {
         numberOfItemsAdded += list.second->getListSize();
         for(auto &item : list.second->getItems()) {
             numOfItemsUsingQuantity += item->getQuantity();
+            if(!item->isBought()) {
+                numberOfItemsLeftToBuy++;
+            }
         }
         numberOfLists++;
     }
@@ -138,5 +142,9 @@ int User::getNumberOfItemsAdded() const {
 
 int User::getNumOfItemsUsingQuantity() const {
     return numOfItemsUsingQuantity;
+}
+
+int User::getNumberOfItemsLeftToBuy() const {
+    return numberOfItemsLeftToBuy;
 }
 

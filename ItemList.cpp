@@ -47,7 +47,11 @@ void ItemList::printList() const {
     } else {
         listOutput = "Empty List";
     }
-    std::cout << "List Name: " << getListName() << ", serial: " << getListId() << ", number of items: " << getListSize() << ", total price: " << totalPrice << std::endl;
+    std::cout << "List Name: " << getListName() << ", serial: " << getListId()
+        << ", number of items: " << getListSize()
+        << ", items left to buy: " << getListSizeToBuyOnly()
+        << ", total price: " << totalPrice
+        << ", to be paid: " << getPriceToStillBePaid() << std::endl;
     std::cout << listOutput << std::endl;
 }
 
@@ -58,7 +62,6 @@ void ItemList::removeItem(int index) {
             return;
         }
         items.erase(items.begin() + (index - 1));
-
         this->notify();
     } else {
         std::cout << listName << " is already empty" << std::endl;
@@ -84,6 +87,22 @@ int ItemList::getListIdCounter() {
 
 int ItemList::getListSize() const {
     return (int)items.size();
+}
+
+int ItemList::getListSizeToBuyOnly() const {
+    int size = 0;
+    for(const auto &item : items) {
+        if(!item->isBought()) size++;
+    }
+    return size;
+}
+
+double ItemList::getPriceToStillBePaid() const {
+    double price = 0;
+    for(const auto &item : items) {
+        if(!item->isBought()) price+= item->calculatePrice();
+    }
+    return price;
 }
 
 void ItemList::subscribe(std::weak_ptr<Observer> o) {

@@ -22,6 +22,8 @@ public:
     const std::string &getListName() const;
 
     int getListSize() const;
+    int getListSizeToBuyOnly() const;
+    double getPriceToStillBePaid() const;
     void addItem(std::shared_ptr<Item> item);
     void printList() const;
     void removeItem(int index);

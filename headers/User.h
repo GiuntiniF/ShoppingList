@@ -39,6 +39,8 @@ public:
 
     void detach(std::shared_ptr<Subject> list) override;
 
+    int getNumberOfItemsLeftToBuy() const;
+
 private:
     std::map<int, std::shared_ptr<ItemList>> lists;
     int userId;
@@ -47,6 +49,7 @@ private:
     int numberOfItemsAdded = 0;
     int numberOfLists = 0;
     int numOfItemsUsingQuantity = 0;
+    int numberOfItemsLeftToBuy = 0;
 };
 
 
