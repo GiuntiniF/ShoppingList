@@ -29,8 +29,13 @@ void User::setName(const std::string &name) {
 bool User::addList(std::shared_ptr<ItemList> &list) {
     if(list == nullptr) return false;
     std::shared_ptr<ItemList> list2 = list;
-    lists.insert(std::make_pair<int, std::shared_ptr<ItemList>>(list->getListId(), std::move(list)));
-    attach(std::move(list2));
+    if(lists.find(list->getListId()) != lists.end()) {
+        std::cout << "List already present" << std::endl;
+        return false;
+    } else {
+        lists.insert(std::make_pair<int, std::shared_ptr<ItemList>>(list->getListId(), std::move(list)));
+        attach(std::move(list2));
+    }
     return true;
 }
 
