@@ -25,14 +25,6 @@ const std::string &ItemList::getListName() const {
     return listName;
 }
 
-void ItemList::setListName(const std::string &listName) {
-    if (this->listName.empty()) {
-        std::cerr << "List Name cannot be empty." << std::endl;
-        return;
-    }
-    ItemList::listName = listName;
-}
-
 void ItemList::addItem(std::shared_ptr<Item> item) {
     try {
         items.push_back( std::move(item));

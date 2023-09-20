@@ -20,7 +20,7 @@ public:
     int getListId() const;
 
     const std::string &getListName() const;
-    void setListName(const std::string &listName);
+
     int getListSize() const;
     void addItem(std::shared_ptr<Item> item);
     void printList() const;
