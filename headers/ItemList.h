@@ -29,6 +29,8 @@ public:
     void removeItem(int index);
     bool checkItem(int index);
     bool uncheckItem(int index);
+    bool changeItemPrice(int index, float basePrice);
+    bool changeItemQuantity(int index, int quantity);
     std::weak_ptr<Item> getItem(int index) const;
     const std::vector<std::shared_ptr<Item>> & getItems() const;
 

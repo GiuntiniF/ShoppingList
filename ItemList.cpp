@@ -140,3 +140,19 @@ bool ItemList::uncheckItem(int index) {
     notify();
     return true;
 }
+
+bool ItemList::changeItemPrice(int index, float basePrice) {
+    auto my_item = getItem(index);
+    if(my_item.lock() == nullptr) return false;
+    my_item.lock()->setBasePrice(basePrice);
+    notify();
+    return true;
+}
+
+bool ItemList::changeItemQuantity(int index, int quantity) {
+    auto my_item = getItem(index);
+    if(my_item.lock() == nullptr) return false;
+    my_item.lock()->setQuantity(quantity);
+    notify();
+    return true;
+}

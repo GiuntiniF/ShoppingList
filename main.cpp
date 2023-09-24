@@ -84,10 +84,10 @@ int main() {
             renameItem(currentItem);
         } else
         if(cmd == "changePrice") {
-            changePrice(currentItem);
+            changePrice(currentList, currentItem);
         } else
         if(cmd == "changeQuantity") {
-            changeQuantity(currentItem);
+            changeQuantity(currentList, currentItem);
         } else
         if(cmd == "checkItem") {
             checkItem(currentList, currentItem);

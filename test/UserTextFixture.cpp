@@ -15,11 +15,13 @@ protected:
         list2->addItem(std::move(item6));
     }
     std::shared_ptr<ItemList> list1 = std::make_shared<ItemList>();
+    int list1id = list1->getListId();
     std::unique_ptr<Item> item1 = std::make_unique<Item>("Steak", 12, 1);
     std::unique_ptr<Item> item2 = std::make_unique<Item>( "Turkey", 2, 3);
     std::unique_ptr<Item> item3 = std::make_unique<Item>( "Salad", 3, 3);
 
     std::shared_ptr<ItemList> list2 = std::make_shared<ItemList>();
+    int list2id = list2->getListId();
     std::unique_ptr<Item> item5 = std::make_unique<Item>("Chicken", 5, 10);
     std::unique_ptr<Item> item6 = std::make_unique<Item>("Meat", 1, 1);
 };
@@ -86,4 +88,16 @@ TEST_F(UserSuite, testObserverPattern) {
     ASSERT_EQ(2, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(11, myuser->getNumOfItemsUsingQuantity());
     ASSERT_EQ(11, myuser->getNumberOfItemsLeftToBuy());
+
+    myuser->getLists().find(list2id)->second->changeItemQuantity(1, 5);
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(2, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(6, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(6, myuser->getNumberOfItemsLeftToBuy());
+
+    myuser->getLists().find(list2id)->second->checkItem(2);
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(2, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(6, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(5, myuser->getNumberOfItemsLeftToBuy());
 }

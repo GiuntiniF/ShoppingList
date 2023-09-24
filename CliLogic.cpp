@@ -354,7 +354,7 @@ void removeItem(std::weak_ptr<ItemList>& currentList, std::pair<int, std::weak_p
     }
 }
 
-void changePrice(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+void changePrice(std::weak_ptr<ItemList> &currentList, std::pair<int, std::weak_ptr<Item>> &currentItem) {
     if(currentItem.second.expired()) {
         noItemSelectedError();
         return;
@@ -368,7 +368,7 @@ void changePrice(std::pair<int, std::weak_ptr<Item>>& currentItem) {
         std::cin.ignore(1000, '\n');
         return;
     }
-    currentItem.second.lock()->setBasePrice(newPrice);
+    currentList.lock()->changeItemPrice(currentItem.first, newPrice);
     std::cin.clear();
     std::cin.ignore(1000, '\n');
 }
@@ -390,7 +390,7 @@ void renameItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
     currentItem.second.lock()->setName(newName);
 }
 
-void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+void changeQuantity(std::weak_ptr<ItemList> &currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
     if(currentItem.second.expired()) {
         noItemSelectedError();
         return;
@@ -404,7 +404,7 @@ void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
         std::cin.ignore(1000, '\n');
         return;
     }
-    currentItem.second.lock()->setQuantity(newQuantity);
+    currentList.lock()->changeItemQuantity(currentItem.first, newQuantity);
     std::cin.clear();
     std::cin.ignore(1000, '\n');
 }
