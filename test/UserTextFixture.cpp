@@ -55,19 +55,32 @@ TEST_F(UserSuite, testObserverPattern) {
     ASSERT_EQ(0, myuser->getNumberOfLists());
     ASSERT_EQ(0, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(0, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(0, myuser->getNumberOfItemsLeftToBuy());
     int mylistid = list1->getListId();
     myuser->addList(list1);
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(3, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(7, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(3, myuser->getNumberOfItemsLeftToBuy());
     myuser->getLists().find(mylistid)->second->addItem(std::make_unique<Item>("Turkey", 2, 3));
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(4, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(10, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(4, myuser->getNumberOfItemsLeftToBuy());
+
+    ASSERT_FALSE(myuser->getLists().find(mylistid)->second->getItem(1).lock()->isBought());
+    myuser->getLists().find(mylistid)->second->checkItem(1);
+    ASSERT_TRUE(myuser->getLists().find(mylistid)->second->getItem(1).lock()->isBought());
+    ASSERT_EQ(1, myuser->getNumberOfLists());
+    ASSERT_EQ(4, myuser->getNumberOfItemsAdded());
+    ASSERT_EQ(10, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(3, myuser->getNumberOfItemsLeftToBuy());
+
     myuser->addList(list2);
     ASSERT_EQ(2, myuser->getNumberOfLists());
     ASSERT_EQ(6, myuser->getNumberOfItemsAdded());
     ASSERT_EQ(21, myuser->getNumOfItemsUsingQuantity());
+    ASSERT_EQ(5, myuser->getNumberOfItemsLeftToBuy());
     myuser->removeList(mylistid);
     ASSERT_EQ(1, myuser->getNumberOfLists());
     ASSERT_EQ(2, myuser->getNumberOfItemsAdded());

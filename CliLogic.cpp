@@ -409,7 +409,7 @@ void changeQuantity(std::pair<int, std::weak_ptr<Item>>& currentItem) {
     std::cin.ignore(1000, '\n');
 }
 
-void checkItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+void checkItem(std::weak_ptr<ItemList> &currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
     if(currentItem.second.expired()) {
         noItemSelectedError();
         return;
@@ -418,11 +418,11 @@ void checkItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
         std::cout << currentItem.second.lock()->getName() << " is already checked" << std::endl;
         return;
     }
-    currentItem.second.lock()->setIsBought(true);
+    currentList.lock()->checkItem(currentItem.first);
     std::cout << currentItem.second.lock()->getName() << " is now checked" << std::endl;
 }
 
-void uncheckItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
+void uncheckItem(std::weak_ptr<ItemList> &currentList, std::pair<int, std::weak_ptr<Item>>& currentItem) {
     if(currentItem.second.expired()) {
         noItemSelectedError();
         return;
@@ -431,6 +431,6 @@ void uncheckItem(std::pair<int, std::weak_ptr<Item>>& currentItem) {
         std::cout << currentItem.second.lock()->getName() << " is already not checked" << std::endl;
         return;
     }
-    currentItem.second.lock()->setIsBought(false);
+    currentList.lock()->uncheckItem(currentItem.first);
     std::cout << currentItem.second.lock()->getName() << " is now unchecked" << std::endl;
 }

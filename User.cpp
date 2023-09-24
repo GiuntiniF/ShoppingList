@@ -116,14 +116,14 @@ void User::update() {
 
 void User::attach(std::shared_ptr<Subject> list) {
     if(list) {
-        list->subscribe(this->weak_from_this());
+        list->subscribe(*this);
         update();
     }
 }
 
 void User::detach(std::shared_ptr<Subject> list) {
     if(list) {
-        list->unsubscribe(this->weak_from_this());
+        list->unsubscribe(*this);
         update();
     }
 }

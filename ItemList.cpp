@@ -105,35 +105,38 @@ double ItemList::getPriceToStillBePaid() const {
     return price;
 }
 
-void ItemList::subscribe(std::weak_ptr<Observer> o) {
-    userList.push_back(o);
+void ItemList::subscribe(Observer &o) {
+    userList.emplace_back(o);
 }
 
-void ItemList::unsubscribe(std::weak_ptr<Observer> o) {
-    std::shared_ptr<Observer> mydelete = o.lock();
-    auto it = userList.begin();
-    while (it != userList.end()) {
-        if (it->expired()) {
-            it = userList.erase(it);
-        } else {
-            std::shared_ptr<Observer> tmpptr = it->lock();
-            if (tmpptr) {
-                if (tmpptr == mydelete) {
-                    it = userList.erase(it);
-                    continue;
-                }
-            }
-            ++it;
-        }
-    }
+void ItemList::unsubscribe(Observer &o) {
+    auto isTargetObserver = [&o](const std::reference_wrapper<Observer>& ref) {
+        return &ref.get() == &o;
+    };
+    userList.remove_if(isTargetObserver);
 }
 
 void ItemList::notify() {
     for (const auto &user: userList) {
-        user.lock()->update();
+        user.get().update();
     }
 }
 
 const std::vector<std::shared_ptr<Item>> & ItemList::getItems() const {
     return items;
+}
+
+bool ItemList::checkItem(int index) {
+    auto my_item = getItem(index);
+    if(my_item.lock() == nullptr) return false;
+    my_item.lock()->setIsBought(true);
+    notify();
+    return true;
+}
+bool ItemList::uncheckItem(int index) {
+    auto my_item = getItem(index);
+    if(my_item.lock() == nullptr) return false;
+    my_item.lock()->setIsBought(false);
+    notify();
+    return true;
 }

@@ -27,20 +27,22 @@ public:
     void addItem(std::shared_ptr<Item> item);
     void printList() const;
     void removeItem(int index);
+    bool checkItem(int index);
+    bool uncheckItem(int index);
     std::weak_ptr<Item> getItem(int index) const;
     const std::vector<std::shared_ptr<Item>> & getItems() const;
 
     static int getListIdCounter();
 
-    void subscribe(std::weak_ptr<Observer> o) override;
-    void unsubscribe(std::weak_ptr<Observer> o) override;
+    void subscribe(Observer &o) override;
+    void unsubscribe(Observer &o) override;
     void notify() override;
 
 private:
     int listId;
     std::string listName;
     std::vector<std::shared_ptr<Item>> items;
-    std::list<std::weak_ptr<Observer>> userList;
+    std::list<std::reference_wrapper<Observer>> userList;
 
     static int listIdCounter;
 };

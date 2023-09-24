@@ -12,8 +12,8 @@
 
 class Subject {
 public:
-    virtual void subscribe(std::weak_ptr<Observer> o) = 0;
-    virtual void unsubscribe(std::weak_ptr<Observer> o) = 0;
+    virtual void subscribe(Observer &o) = 0;
+    virtual void unsubscribe(Observer &o) = 0;
     virtual void notify() = 0;
 
     virtual ~Subject() {}

@@ -11,6 +11,7 @@ int main() {
     UserList userMap;
     std::weak_ptr<User> currentUser;
     std::weak_ptr<ItemList> currentList;
+    int currentItemPosition;
     std::pair<int, std::weak_ptr<Item>> currentItem;
 
     std::cout << "SHOPPING LIST MANAGER" << std::endl;
@@ -89,10 +90,10 @@ int main() {
             changeQuantity(currentItem);
         } else
         if(cmd == "checkItem") {
-            checkItem(currentItem);
+            checkItem(currentList, currentItem);
         } else
         if(cmd == "uncheckItem") {
-            uncheckItem(currentItem);
+            uncheckItem(currentList, currentItem);
         } else
         if(cmd != "exit") {
             std::cout << "No command found with the given name, try using the help command" << std::endl;
