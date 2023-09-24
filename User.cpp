@@ -107,7 +107,7 @@ void User::update() {
         for(auto &item : list.second->getItems()) {
             numOfItemsUsingQuantity += item->getQuantity();
             if(!item->isBought()) {
-                numberOfItemsLeftToBuy++;
+                numberOfItemsLeftToBuy+= item->getQuantity();
             }
         }
         numberOfLists++;
