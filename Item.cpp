@@ -13,7 +13,7 @@ int Item::itemCount = 0;
 
 Item::Item(const std::string &name, float pricePerUnit, int quantity)
     : name(name), pricePerUnit(pricePerUnit), quantity(quantity) {
-    if (this->name.empty()) {
+    if (this->name.empty() || this->name == "") {
         throw std::invalid_argument("Name cannot be empty.");
     }
     if (pricePerUnit <= 0.0) {
@@ -34,7 +34,7 @@ const std::string &Item::getName() const {
 }
 
 void Item::setName(const std::string &name) {
-    if (this->name.empty()) {
+    if (name.empty()) {
         std::cerr <<"Name cannot be empty." << std::endl;
         return;
     }
@@ -46,7 +46,7 @@ float Item::getBasePrice() const {
 }
 
 void Item::setBasePrice(float basePrice) {
-    if (this->name.empty()) {
+    if (basePrice <= 0.0) {
         std::cerr <<"Price per unit cannot be negative." << std::endl;
         return;
     }
@@ -58,7 +58,7 @@ int Item::getQuantity() const {
 }
 
 void Item::setQuantity(int quantity) {
-    if (this->name.empty()) {
+    if (quantity <= 0) {
         std::cerr <<"Quantity cannot be negative." << std::endl;
         return;
     }

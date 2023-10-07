@@ -17,22 +17,30 @@ TEST(Item, Constructor) {
 
 TEST(Item, Setters) {
     Item c("test", 10, 2);
-    ASSERT_EQ(false, c.isBought());
-    // EXPECT_THROW(c.setName(""), std::invalid_argument);
+
     c.setName("test2");
     ASSERT_EQ("test2", c.getName());
 
-    // EXPECT_THROW(c.setBasePrice(0), std::invalid_argument);
-    // EXPECT_THROW(c.setBasePrice(-1), std::invalid_argument);
+    c.setName("");
+    ASSERT_EQ("test2", c.getName());
+
     c.setBasePrice(2);
     ASSERT_EQ(2, c.getBasePrice());
+    c.setBasePrice(0);
+    ASSERT_EQ(2, c.getBasePrice());
+    c.setBasePrice(-1);
+    ASSERT_EQ(2, c.getBasePrice());
 
-    // EXPECT_THROW(c.setQuantity(0), std::invalid_argument);
-    // EXPECT_THROW(c.setQuantity(-1), std::invalid_argument);
     c.setQuantity(2);
     ASSERT_EQ(2, c.getQuantity());
-    // EXPECT_THROW(Item("", 10, 10), std::invalid_argument);
+    c.setQuantity(0);
+    ASSERT_EQ(2, c.getQuantity());
+    c.setQuantity(-1);
+    ASSERT_EQ(2, c.getQuantity());
 
+    ASSERT_FALSE(c.isBought());
     c.setIsBought(true);
     ASSERT_TRUE(c.isBought());
+    c.setIsBought(false);
+    ASSERT_FALSE(c.isBought());
 }
