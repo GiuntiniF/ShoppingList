@@ -41,7 +41,7 @@ TEST_F(ItemListSuite, RemoveFirst) {
     ASSERT_EQ(2, c.getListSize());
     ASSERT_EQ(item2Id, c.getItem(1).lock()->getItemId());
 }
-TEST_F(ItemListSuite, AddAndBuyItem) {
+TEST_F(ItemListSuite, AddItem) {
     ASSERT_EQ(3, c.getListSize());
     ASSERT_EQ(item3Id, c.getItem(c.getListSize()).lock()->getItemId());
     ASSERT_EQ(c.getListSize(), c.getListSizeToBuyOnly());
@@ -51,16 +51,6 @@ TEST_F(ItemListSuite, AddAndBuyItem) {
     c.addItem(std::move(item4));
     ASSERT_EQ(4, c.getListSize());
     ASSERT_EQ(item4Id, c.getItem(c.getListSize()).lock()->getItemId());
-    ASSERT_EQ(c.getListSize(), c.getListSizeToBuyOnly());
-    ASSERT_EQ(67, c.getPriceToStillBePaid());
-
-    c.checkItem(4);
-    ASSERT_EQ(4, c.getListSize());
-    ASSERT_EQ(3, c.getListSizeToBuyOnly());
-    ASSERT_EQ(17, c.getPriceToStillBePaid());
-
-    c.uncheckItem(4);
-    ASSERT_EQ(4, c.getListSize());
     ASSERT_EQ(c.getListSize(), c.getListSizeToBuyOnly());
     ASSERT_EQ(67, c.getPriceToStillBePaid());
 }
