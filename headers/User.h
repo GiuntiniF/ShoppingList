@@ -14,7 +14,7 @@
 #include <algorithm>
 #include "ItemList.h"
 
-class User : public Observer, public std::enable_shared_from_this<User> {
+class User : public Observer {
 public:
     int getNumberOfItemsAdded() const;
     int getNumOfItemsUsingQuantity() const;

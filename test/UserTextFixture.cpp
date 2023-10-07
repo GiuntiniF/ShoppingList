@@ -32,6 +32,17 @@ TEST_F(UserSuite, DefaultConstructor) {
     ASSERT_EQ("Test", myuser.getName());
     ASSERT_EQ(1, myuser.getUserId());
     ASSERT_EQ(1, User::getUsersCount());
+    ASSERT_THROW(User(""), std::invalid_argument);
+    ASSERT_NO_THROW(User("test2"));
+}
+
+TEST_F(UserSuite, Setters) {
+    User myuser = User("Test");
+    ASSERT_EQ("Test", myuser.getName());
+    myuser.setName("");
+    ASSERT_EQ("Test", myuser.getName());
+    myuser.setName("test2");
+    ASSERT_EQ("test2", myuser.getName());
 }
 
 TEST_F(UserSuite, AddListToUser) {

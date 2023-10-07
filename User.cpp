@@ -19,7 +19,7 @@ const std::string &User::getName() const {
 }
 
 void User::setName(const std::string &name) {
-    if (this->name.empty()) {
+    if (name.empty()) {
         std::cerr << "User Name cannot be empty." << std::endl;
         return;
     }
